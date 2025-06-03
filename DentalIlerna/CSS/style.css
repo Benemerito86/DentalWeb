@@ -1,0 +1,64 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "poppins", sans-serif;
+}
+body{
+    background-color: rgba(241, 241, 241, 1);
+}
+header{
+    background-color: white;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 200px;
+    transition: 0.5s ease;
+    .brand{
+        color: #000000;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+    .navigation{
+        .navigation-items{
+            a{
+                color: #000000;
+                font-size: 1em;
+                font-weight: 500;
+                text-decoration: none;
+                transition: 0.3s ease;
+            }
+         
+        }
+
+    }
+    
+
+}
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altura completa de la pantalla */
+}
+
+/* Opcional: estilos para el contenedor de login */
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 4rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.apilado {
+    color: rgb(0, 0, 132);
+    margin: 8px 0;
+}
