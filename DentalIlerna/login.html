@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iLERNA - Iniciar sesión</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="img/icono.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">iLERNA.</h1>
+        </div>
+    </header>
+
+    <!-- Contenido Main -->
+    <main class="main">
+        <div class="login-container">
+            <div class="login-card">
+                <h2 class="login-title">Iniciar sesión</h2>
+
+                <form class="login-form">
+                    <!-- Campo Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email" id="email" class="form-input" required>
+                    </div>
+
+                    <!-- Campo Contraseña -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="password-container">
+                            <input type="password" id="password" class="form-input" required>
+                            <button type="button" class="show-password-btn" onclick="togglePassword()">Mostrar</button>
+                        </div>
+                    </div>
+
+                    <!-- Olvidar contraseña -->
+                    <div class="forgot-password">
+                        <a href="#" class="forgot-link">¿Olvidó su contraseña?</a>
+                    </div>
+
+                    <!-- Boton Login -->
+                    <button type="submit" class="login-btn">Entrar</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const showBtn = document.querySelector('.show-password-btn');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                showBtn.textContent = 'Ocultar';
+            } else {
+                passwordInput.type = 'password';
+                showBtn.textContent = 'Mostrar';
+            }
+        }
+    </script>
+</body>
+</html>
