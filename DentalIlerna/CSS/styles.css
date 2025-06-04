@@ -15,6 +15,7 @@ body {
     background-color: white;
     border-bottom: 1px solid #e5e5e5;
     padding: 16px 0;
+    box-shadow: 50px 0 30px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -68,31 +69,32 @@ body {
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5vw;
 }
 
 .form-label {
     font-size: 14px;
     font-weight: 500;
-    color: #4a4a4a;
+    color: #139bab;
 }
 
-.email-label {
-    color: #0d9488;
+
+#email:focus {
+    border: 0.15vw solid #139bab;
 }
 
 .form-input {
     padding: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
+    background-color: #f1f1f1;
+    border: 0vw solid #139bab;
     font-size: 16px;
+    border-radius: 0.2vw;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-input:focus {
     outline: none;
     border-color: #0d9488;
-    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
 }
 
 .email-input {
@@ -161,59 +163,6 @@ body {
 
 .login-btn:hover {
     background-color: #0f766e;
-}
-
-/* Google Sign In */
-.google-signin {
-    margin-top: 24px;
-}
-
-.google-account {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    gap: 12px;
-}
-
-.google-account:hover {
-    background-color: #f9fafb;
-}
-
-.user-avatar {
-    width: 32px;
-    height: 32px;
-    background-color: #7c3aed;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 500;
-    font-size: 14px;
-}
-
-.user-info {
-    flex: 1;
-}
-
-.user-name {
-    font-size: 14px;
-    font-weight: 500;
-    color: #1a1a1a;
-}
-
-.user-email {
-    font-size: 12px;
-    color: #6b7280;
-}
-
-.google-icon {
-    width: 24px;
-    height: 24px;
 }
 
 /* Responsive */
