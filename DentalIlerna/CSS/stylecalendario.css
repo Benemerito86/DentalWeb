@@ -12,7 +12,7 @@ body {
 
 .layout {
   display: flex;
-  height: 100vh;
+  min-height: 100vh
 }
 
 /* 1. Sidebar */
@@ -64,10 +64,10 @@ body {
 .legal {
   font-size: 1vw;
   color: #aaa;
-  padding: 15px;
+  padding: 1vw 1.5vw;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0.4vw;
 }
 
 .legal a {
@@ -126,12 +126,12 @@ body {
 .calendar-body {
   flex: 1;
   background-color: #f0f0f0;
-  padding: 20px;
+
 }
 
 /* Contenedor del calendario (placeholder por ahora) */
 .calendar-placeholder {
   background-color: white;
-  border-radius: 8px;
-  height: 100%;
+  height: auto;
+  
 }
