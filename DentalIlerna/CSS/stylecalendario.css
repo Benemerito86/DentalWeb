@@ -155,3 +155,55 @@
   height: auto;
   
 }
+
+/* Contenedor del calendario */
+  #calendar {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #0056A0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Botones de navegación */
+  .fc .fc-button {
+    background-color: #0056A0;
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fc .fc-button:hover {
+    background-color: #007BFF;
+  }
+  
+  /* Barra de herramientas */
+  .fc-toolbar-title {
+    color: #0056A0;
+    font-size: 1.6em;
+  }
+  
+  /* Evento del calendario */
+  .fc-event {
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 2px 4px;
+  }
+  
+  /* Estilo de hora (en la vista diaria) */
+  .fc-timegrid-slot-label {
+    color: #333333;
+    font-weight: bold;
+  }
+  
+  /* Vista de día y rejilla */
+  .fc-timegrid {
+    background-color: #FAFAFA;
+  }
+  

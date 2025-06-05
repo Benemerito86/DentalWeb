@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calendario ILERNA</title>
-    <link rel="stylesheet" href="CSS/fondo1.css"/>
-    <link rel="icon" type="image/png" href="img/icono.png">
-
-  <link rel="stylesheet" href="CSS/stylecalendario.css" />
+  <link rel="stylesheet" href="../DentalIlerna/CSS/stylecalendario.css" />
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+  <style>
+    #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+    }
+  </style>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 </head>
+
 <body>
   <div class="layout">
     <!-- 1. Sidebar -->
@@ -47,10 +54,15 @@
       <!-- Contenido del calendario -->
       <section class="calendar-body">
         <div class="calendar-placeholder">
-          <!-- Aquí irá el calendario -->
+          <h1 style="text-align:center;">Calendario de Citas - Higiene Bucodental</h1>
+          <div id="calendar"></div>
+
+          <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+          <script src="../DentalIlerna/JS/calendar.js"></script>
         </div>
       </section>
     </div>
   </div>
 </body>
+
 </html>
