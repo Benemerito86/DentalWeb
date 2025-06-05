@@ -1,54 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Perfil Profesor</title>
-  <link rel="stylesheet" href="CSS/fondo1.css"/>
-  <link rel="stylesheet" href="CSS/stylecalendario.css" />
-  <link rel="icon" type="image/png" href="img/icono.png">
-</head>
-<body>
-  <div class="layout">
-    <!-- 1. Sidebar -->
-    <aside class="sidebar">
-      <!-- Parte azul superior -->
-      <div class="sidebar-header">
-        <a href="inicioProfesor.html">
-          <img id="logo" src="https://campus.ilerna.com/branding/_1_1/CustomNavigationLogo.png?m=m029883y" alt="">
-        </a>
-      </div>
-
-      <!-- Menú de navegación -->
-      <nav class="menu">
-        <ul>
-          <a class="select" href="perfilprofesor.html"><img src="IMG/profilePicB.png" class="icon">Perfil</a>
-          <a class="opt" href="calendario.html"><img class="icon" src="IMG/calendarPicW.png">Calendario</a>
-          <a class="opt" href="index.html"><img src="IMG/logoutPicW.png" class="icon">Cerrar Sesión</a>
-        </ul>
-      </nav>
-
-      <!-- Enlaces legales -->
-      <div class="legal">
-        <a href="#">Privacidad</a>
-        <a href="#">Condiciones</a>
-      </div>
-    </aside>
-
-    <!-- 2. Área principal -->
-    <div class="main-area">
-      <!-- Barra superior -->
-      <header class="top-bar">
-        <h1>Perfil del Profesor</h1>
-      </header>
-
-      <!-- Contenido del calendario -->
-      <section class="calendar-body">
-        <div class="calendar-placeholder">
-          <!-- Aquí irá la información del perfil del profesor -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil Profesor</title>
+    <link rel="stylesheet" href="CSS/fondo1.css" />
+    <link rel="stylesheet" href="CSS/styles.css" />
+    <link rel="stylesheet" href="CSS/stylecalendario.css" />
+    <link rel="icon" type="image/png" href="img/icono.png" />
+    
+  </head>
+  <body>
+    <div class="layout">
+      <!-- 1. Sidebar -->
+      <aside class="sidebar">
+        <!-- Parte azul superior -->
+        <div class="sidebar-header">
+          <a href="inicioProfesor.html">
+            <img
+              id="logo"
+              src="https://campus.ilerna.com/branding/_1_1/CustomNavigationLogo.png?m=m029883y"
+              alt=""
+            />
+          </a>
         </div>
-      </section>
+
+        <!-- Menú de navegación -->
+        <nav class="menu">
+          <ul>
+            <a class="select" href="perfilprofesor.html"
+              ><img
+                src="IMG/profilePicB.png"
+                class="icon"
+                alt="PerfilProfesor"
+              />Perfil</a
+            >
+            <a class="opt" href="calendario.html"
+              ><img
+                class="icon"
+                src="IMG/calendarPicW.png"
+                alt="Calendario"
+              />Calendario</a
+            >
+            <a class="opt" href="index.html"
+              ><img
+                src="IMG/logoutPicW.png"
+                class="icon"
+                alt="Cerrar Sesión"
+              />Cerrar Sesión</a
+            >
+          </ul>
+        </nav>
+
+        <!-- Enlaces legales -->
+        <div class="legal">
+          <a href="#">Privacidad</a>
+          <a href="#">Condiciones</a>
+        </div>
+      </aside>
+
+      <!-- 2. Área principal -->
+      <div class="main-area">
+        <!-- Barra superior -->
+        <header class="top-bar">
+          <h1>Perfil del Profesor</h1>
+        </header>
+
+        <!-- Right Side Cards -->
+        <div class="right-cards">
+          <!-- Profile Card -->
+          <div class="card">
+            <div class="card-icon">👤</div>
+            <h3 class="card-title">PROFE</h3>
+          </div>
+
+          <!-- Ubicación con enlace a Google Maps -->
+          <a
+            href="https://www.google.com/maps/place/ILERNA+Sevilla/@37.4068468,-5.9325769,17z/data=!3m1!4b1!4m6!3m5!1s0xd1269414d8c133d:0x498ce95cde9f9931!8m2!3d37.4068468!4d-5.9299966!16s%2Fg%2F11k0jkk0st?entry=ttu"
+            target="_blank"
+            style="text-decoration: none"
+          >
+            <div class="card" style="cursor: pointer">
+              <div class="card-icon">📍</div>
+              <h3 class="card-title">ILERNA - ILERNA</h3>
+            </div>
+          </a>
+
+          <!-- Calendario Card -->
+          <div class="card">
+            <div class="card-icon">📆</div>
+            <h3 class="card-title">Martes, 3 de Junio de 2025</h3>
+            <p class="card-text">No hay citas para hoy</p>
+          </div>
+        </div>
+
+        <!-- Contenido del calendario -->
+        <section class="calendar-body">
+          <div class="calendar-placeholder">
+            <!-- Aquí irá la información del perfil del profesor -->
+          </div>
+        </section>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
+
+
