@@ -221,7 +221,7 @@
 .perfil-placeholder {
   background-color: rgba(255, 255, 255, 0.95);
   width: 28vw;
-  max-height: 90vh;
+  max-height: 80vh;
   margin: 2vw auto;
   padding: 2vw;
   border-radius: 1vw;
@@ -229,7 +229,8 @@
   display: flex;
     flex-direction: column;
   align-items: center;
-  gap: 0.6vw;
+  gap: 0.7vw;
+  overflow-y: auto;
 }
 
 .perfil-placeholder img {
@@ -257,6 +258,20 @@
   border-radius: 0.4vw;
   background-color: #f9f9f9;
   color: #444;
+}
+
+.perfil-placeholder button {
+  background-color: #00c4cc;
+  color: white;
+  border: none;
+  padding: 0.5vw 1.5vw;
+  font-size: 0.9vw;
+  border-radius: 0.4vw;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.perfil-placeholder button:hover {
+  background-color: #009fae;
 }
 
 
