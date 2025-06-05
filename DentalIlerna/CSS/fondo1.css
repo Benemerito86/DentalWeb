@@ -19,6 +19,6 @@ body::before {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    filter: blur(0.3vw);
+    filter: blur(0.2vw);
     z-index: -1;
 }
