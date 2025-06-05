@@ -2,17 +2,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
-
-#logo {
+#logo{
   height: 3.65vw;
-  width: auto;
-  /* mantiene proporción */
+  width: auto; /* mantiene proporción */
   margin: auto;
-  
 }
-
 .layout {
   display: flex;
   min-height: 100vh
@@ -35,7 +30,7 @@
   text-align: center;
 }
 
-.sidebar-header img {
+.sidebar-header img{
   width: 9vw;
 }
 
@@ -54,13 +49,11 @@
   color: white;
   font-size: 1vw;
   text-decoration: none;
-
-  a {
+  a{
     color: white;
   }
-
+  
 }
-
 .menu .select {
   margin-left: 0.5vw;
   color: black;
@@ -68,19 +61,17 @@
   background-color: #00c4cc;
 
 }
-
-.select:hover {
+.select:hover{
   color: black;
-  text-decoration: underline;
+    text-decoration: underline;
 
 
 }
-
 .menu .opt:hover {
   background-color: #474747;
   text-decoration: underline;
   margin-left: 0.5vw;
-
+  
 
 }
 
@@ -88,11 +79,9 @@
   margin-right: 0.5vw;
   height: 1.5vw;
 }
-
 .select:hover .icon {
   text-decoration: none;
 }
-
 .legal {
   font-size: 0.75vw;
   color: #aaa;
@@ -162,81 +151,7 @@
 
 /* Contenedor del calendario (placeholder por ahora) */
 .calendar-placeholder {
-  height: auto;
-
-}
-
-/* Contenedor del calendario */
-#calendar {
-  max-width: 900px;
-  margin: 40px auto;
   background-color: white;
-  padding: 20px;
-  border: 2px solid #0056A0;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Botones de navegación */
-.fc .fc-button {
-  background-color: #0056A0;
-  border: none;
-  color: white;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.fc .fc-button:hover {
-  background-color: #007BFF;
-}
-
-/* Barra de herramientas */
-.fc-toolbar-title {
-  color: #0056A0;
-  font-size: 1.6em;
-}
-
-/* Evento del calendario */
-.fc-event {
-  background-color: #007BFF;
-  border: none;
-  color: white;
-  font-weight: 500;
-  border-radius: 5px;
-  padding: 2px 4px;
-}
-
-/* Estilo de hora (en la vista diaria) */
-.fc-timegrid-slot-label {
-  color: #333333;
-  font-weight: bold;
-}
-
-/* Vista de día y rejilla */
-.fc-timegrid {
-  background-color: #FAFAFA;
-}
-
-
-.calendar-placeholder {
-  flex: 1;
-  overflow-y: auto;
-  /* permite el scroll vertical */
-  max-height: calc(100vh - 5.6vw);
-  /* ajusta según el espacio disponible */
-}
-
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-image: url('../IMG/imagenbutacas2.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    filter: blur(1vw);
-    z-index: -1;
+  height: auto;
+  
 }
