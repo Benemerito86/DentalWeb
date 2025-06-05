@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calendario ILERNA</title>
+  <title>Perfil ILERNA</title>
     <link rel="stylesheet" href="CSS/fondo1.css"/>
 
-  <link rel="stylesheet" href="CSS/stylecalendario.css" />
+  <link rel="stylesheet" href="CSS/styleperfil.css" />
       <link rel="icon" type="image/png" href="img/icono.png">
 
 </head>
@@ -17,8 +17,6 @@
       <!-- Parte azul superior -->
       <div class="sidebar-header">
         <a href="inicioUsuario.html">
-
-        
           <img id="logo"  src="https://campus.ilerna.com/branding/_1_1/CustomNavigationLogo.png?m=m029883y" alt="">
         </a>
       </div>
@@ -29,7 +27,6 @@
           <a class="select" href="perfil.html"><image src="IMG/profilePicB.png" class="icon">Perfil</a>
           <a class="opt" href="calendario.html"><image class="icon" src="IMG/calendarPicW.png">Calendario</a>
           <a class="opt" href="index.html"><image src="IMG/logoutPicW.png" class="icon">Cerrar Sesión</a>
-
         </ul>
       </nav>
 
@@ -48,9 +45,15 @@
       </header>
 
       <!-- Contenido del calendario -->
-      <section class="calendar-body">
-        <div class="calendar-placeholder">
+      <section class="perfil-body">
+        <div class="perfil-placeholder">
           <!-- Aquí irá el calendario -->
+           <img src="./IMG/profilepicture.webp" alt="">
+           <label for="name">Nombre: </label> <input type="text" id="name" value="Nombre Apellido" disabled>
+           <label for="DNI">DNI: </label> <input type="text" id="DNI" value="12345678A" disabled>
+           <label for="email">Email: </label> <input type="text" id="email" value="a@gmail.com" disabled>
+            <label for="phone">Teléfono: </label> <input type="text" id="phone" value="123456789" disabled>
+            <label for="Antecedentes médicos">Antecedentes médicos: </label> <input type="text" id="Antecedentes médicos" value="Ninguno" disabled>
         </div>
       </section>
     </div>
