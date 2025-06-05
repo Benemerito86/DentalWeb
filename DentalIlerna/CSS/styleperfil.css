@@ -10,7 +10,7 @@
   width: auto;
   /* mantiene proporción */
   margin: auto;
-  
+  display: block;
 }
 
 .layout {
@@ -125,7 +125,7 @@
 }
 
 .top-bar h1 {
-  margin-bottom: 15px;
+  margin-bottom: 1.5vw;
 }
 
 .user-filters {
@@ -155,13 +155,13 @@
 }
 
 /* 3. Cuerpo del calendario */
-.calendar-body {
+.perfil-body {
   flex: 1;
 
 }
 
 /* Contenedor del calendario (placeholder por ahora) */
-.calendar-placeholder {
+.perfil-placeholder {
   height: auto;
 
 }
@@ -218,13 +218,47 @@
 }
 
 
-.calendar-placeholder {
-  flex: 1;
-  overflow-y: auto;
-  /* permite el scroll vertical */
-  max-height: calc(100vh - 5.6vw);
-  /* ajusta según el espacio disponible */
+.perfil-placeholder {
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 28vw;
+  max-height: 90vh;
+  margin: 2vw auto;
+  padding: 2vw;
+  border-radius: 1vw;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+    flex-direction: column;
+  align-items: center;
+  gap: 0.6vw;
 }
+
+.perfil-placeholder img {
+  width: 8vw;
+  height: 8vw;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 0.3vw solid #00c4cc;
+  margin-bottom: 1vw;
+}
+
+.perfil-placeholder label {
+  font-size: 0.9vw;
+  font-weight: 600;
+  color: #333;
+  align-self: flex-start;
+  margin-left: 0.5vw;
+}
+
+.perfil-placeholder input {
+  width: 100%;
+  padding: 0.5vw;
+  font-size: 0.9vw;
+  border: 0.1vw solid #ccc;
+  border-radius: 0.4vw;
+  background-color: #f9f9f9;
+  color: #444;
+}
+
 
 body::before {
     content: '';
@@ -240,3 +274,4 @@ body::before {
     filter: blur(1vw);
     z-index: -1;
 }
+
