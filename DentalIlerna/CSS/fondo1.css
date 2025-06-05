@@ -15,10 +15,10 @@ body::before {
     left: 0;
     height: 100%;
     width: 100%;
-    background-image: url('../IMG/imagenbutacas2.jpg');
+    background-image: url('../assets/img/imagenbutacas1.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    filter: blur(1vw);
+    filter: blur(0.3vw);
     z-index: -1;
 }
