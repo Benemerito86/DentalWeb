@@ -125,5 +125,50 @@
     </main>
 
     <script src="../../JS/terminos.js"></script>
+    
+    <script>
+  const form = document.querySelector('.login-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const mail = document.getElementById('email').value;
+    const contraseña = document.getElementById('password').value;
+
+    try {
+      const response = await fetch('https://tu-backend-en-railway.up.railway.app/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mail, contraseña }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Usuario creado con éxito');
+        // Opcional: redirigir a otra página
+        // window.location.href = '/login.html';
+      } else {
+        alert('Error: ' + data.error);
+      }
+    } catch (error) {
+      alert('Error al conectar con el servidor.');
+      console.error(error);
+    }
+  });
+
+  // Función para mostrar/ocultar contraseña (si querés mantenerla)
+  function togglePassword() {
+    const input = document.getElementById('password');
+    const btn = document.querySelector('.show-password-btn');
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = 'Ocultar';
+    } else {
+      input.type = 'password';
+      btn.textContent = 'Mostrar';
+    }
+  }
+</script>
+
 </body>
 </html>
