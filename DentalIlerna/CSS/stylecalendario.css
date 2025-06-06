@@ -146,8 +146,8 @@
 /* 3. Cuerpo del calendario */
 .calendar-body {
   flex: 1;
-
-}
+  overflow-y: auto;       /* permite el scroll vertical */
+  max-height: calc(100vh - 5.6vw); /* ajusta según el espacio disponible */}
 
 /* Contenedor del calendario (placeholder por ahora) */
 .calendar-placeholder {
