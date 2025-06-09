@@ -218,33 +218,64 @@
     padding: 1vw 2vw;
     font-size: 1.3vw;
   }
-  #barra{
-      background-color: f8fcff;
-      border-top: #ededed;
-      border-width: 1vw;
-      border-top-width: 0.001vw;
-      border-style: solid;
-
-      td{
-        margin: 2vw;
-        padding: 0vw 1vw;
-        font-size: 1vw;
-      
-      }
-
+  
+  #search{    
+    border: 0vw #d3d3d3 solid;
+    border-top-width: 0.1vw;
+    text-align: right;
+    img{
+      width: auto;
+      height: 1.6vw;
+      margin-bottom: -0.55vw;
     }
-  #contenido{
-    background-color: #ededed;
-    height: 72%;
-    
-    
+    input{
+      padding: 0.3vw;
+    }
   }
+table.blueTable {
+  background-color: #EEEEEE;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+table.blueTable td, table.blueTable th {
+  border: 0.12vw solid #FFFFFF;
+  padding: 0.2vw 0.4vw;
+}
+
+table.blueTable tbody td {
+  font-size: 0.8vw;
+}
+
+table.blueTable tr:nth-child(even) {
+  background: #D0E4F5;
+}
+
+table.blueTable thead th {
+  background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+#contenido {
+  height: 72%; /* Ajusta según tu diseño */
+  overflow-y: auto;
+  border: 0vw #d3d3d3 solid;
+  border-bottom-width: 0.1vw;
+}
+
   #botones {
     text-align: center;
     
     
     button{
-      margin: 0.6vw 5vw ;
+      margin: 0.4vw 5vw 1vw 6vw;
 
       box-shadow: 0px 0.05vw 0.05vw 0px #1c1b18;
       background:linear-gradient(to bottom, #ffffff 5%, #cecece 100%);
