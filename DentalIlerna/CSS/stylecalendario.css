@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 #logo{
   height: 3.65vw;
@@ -147,11 +148,21 @@
 .calendar-body {
   flex: 1;
   overflow-y: auto;       /* permite el scroll vertical */
-  max-height: calc(100vh - 5.6vw); /* ajusta según el espacio disponible */}
+  max-height: calc(100vh - 5.6vw); /* ajusta según el espacio disponible */
+  overflow-y: hidden;
+}
+
+#calendar {
+  background-color: white;
+}
 
 /* Contenedor del calendario (placeholder por ahora) */
 .calendar-placeholder {
-  background-color: white;
-  height: auto;
-  
+  height: auto; 
+}
+
+#main-container {
+  box-sizing: border-box;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
