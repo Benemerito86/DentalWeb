@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IlernaDental - Recuperar cuenta</title>
+    <link rel="icon" href="../../assets/img/icon.png" type="image/x-icon">
+
+    
+    <link rel="stylesheet" href="../../css/cabecera.css">
+    <link rel="stylesheet" href="../../css/fondo1.css">
+
+    <link rel="stylesheet" href="../../../DentalIlerna/css/styles.css" >
+    <style>
+    body { font-family: sans-serif; }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #555;
+    }
+
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+    }
+
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="../index.html" class="brand">iLERNA.</a>
+        <div class="navigation">
+
+        </div>
+    </header>
+    <image href="../../IMG/imagenbutacas1.jpg"></image>
+
+    <!-- Contenido Main -->
+    <main class="main">
+        <div class="login-container">
+            <div class="login-card">
+                <h2 class="login-title">Recuperar contraseña</h2>
+
+                <form class="login-form">
+                    <!-- Campo Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email" id="email" class="form-input" required>
+                    </div>
+
+
+
+
+  <!-- Botón deshabilitado -->
+
+                    <!-- Boton Login -->
+                    <button type="submit" class="login-btn" id="continuar">Enviar</button>
+                    <p id="noaccount"><a href="../index.html">Volver</a></p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
