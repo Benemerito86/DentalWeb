@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alumnos</title>
-    <link rel="stylesheet" href="css/fondo1.css"/>
-    <link rel="icon" href="../../assets/img/icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="../../css/fondo1.css"/>
-
-  <link rel="stylesheet" href="../../css/styleinicio.css" />
+  
+  <link rel="icon" href="../../assets/img/icon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="../../css/backgroundImage.css"/>
+  <link rel="stylesheet" href="../../css/table.css" />
+  <link rel="stylesheet" href="../../css/styleinicio.css"/>
 </head>
 <body>
   <div class="layout">
@@ -28,6 +29,7 @@
           <a class="opt" href="calendario.html"><image class="icon" src="../../assets/img/calendarWhite.png">Calendario</a>
           <a class="opt" href="profesores.html"><image class="icon" src="../../assets/img/profe.png">Profesores</a>
           <a class="select" href="alumnos.html"><image class="icon" src="../../assets/img/studentBlack.png">Alumnos</a>
+          <a class="opt" href="calificaciones.html"><image class="icon" src="../../assets/img/notesW.png">Notas</a>
           <a class="opt" href="pacientes.html"><image class="icon" src="../../assets/img/paciente.png">Pacientes</a>
           <a class="opt" href="../index.html"><image src="../../assets/img/logoutPicW.png" class="icon">Cerrar Sesión</a>
         </ul>
@@ -106,19 +108,8 @@
       </section>
     </div>
   </div>
-  <script>
-        const inputBuscar = document.getElementById('buscar');
-        const filas = document.querySelectorAll('#tableSearch tbody tr');
+    <script src="../../js/table.js"></script>
 
-        inputBuscar.addEventListener('keyup', () => {
-            const textoBusqueda = inputBuscar.value.toLowerCase();
-
-            filas.forEach(fila => {
-                const textoFila = fila.textContent.toLowerCase();
-                fila.style.display = textoFila.includes(textoBusqueda) ? '' : 'none';
-            });
-        });
-    </script>
 
 </body>
 </html>

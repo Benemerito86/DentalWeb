@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pacientes</title>
-    <link rel="stylesheet" href="css/fondo1.css"/>
-    <link rel="icon" href="../../assets/img/icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="../../css/fondo1.css"/>
-
+  <link rel="icon" href="../../assets/img/icon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="../../css/backgroundImage.css"/>
   <link rel="stylesheet" href="../../css/styleinicio.css" />
+  <link rel="stylesheet" href="../../css/table.css"/>
+
 </head>
 <body>
   <div class="layout">
@@ -121,19 +122,8 @@
       </section>
     </div>
   </div>
-  <script>
-        const inputBuscar = document.getElementById('buscar');
-        const filas = document.querySelectorAll('#tableSearch tbody tr');
+    <script src="../../js/table.js"></script>
 
-        inputBuscar.addEventListener('keyup', () => {
-            const textoBusqueda = inputBuscar.value.toLowerCase();
-
-            filas.forEach(fila => {
-                const textoFila = fila.textContent.toLowerCase();
-                fila.style.display = textoFila.includes(textoBusqueda) ? '' : 'none';
-            });
-        });
-    </script>
 
 </body>
 </html>
