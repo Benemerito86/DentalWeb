@@ -12,7 +12,7 @@ CREATE TABLE usuarios (
     telefono VARCHAR(20),
     antecedentes_medicos TEXT,
     password VARCHAR(255) NOT NULL,
-    rol ENUM('usuario', 'dentista', 'admin') DEFAULT 'usuario'
+    rol ENUM('usuario', 'alumno', 'profesor', 'admin') DEFAULT 'usuario'
 );
 
 -- Tabla de citas
