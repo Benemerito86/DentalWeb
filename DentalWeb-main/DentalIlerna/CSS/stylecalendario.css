@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#logo{
+  height: 3.65vw;
+  width: auto; /* mantiene proporción */
+  margin: auto;
+}
+.layout {
+  display: flex;
+  min-height: 100vh
+}
+
+/* 1. Sidebar */
+.sidebar {
+  width: 10.7vw;
+  background-color: #2c2c2c;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Parte azul superior */
+.sidebar-header {
+  background-color: #00c4cc;
+  height: 5.6vw;
+  padding: 1vw 0;
+  text-align: center;
+}
+
+.sidebar-header img{
+  width: 9vw;
+}
+
+
+.menu ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.menu a {
+  margin: 0.1vw;
+  cursor: pointer;
+  padding: 0.9vw 1.5vw;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 1vw;
+  text-decoration: none;
+  a{
+    color: white;
+  }
+  
+}
+.menu .select {
+  margin-left: 0.5vw;
+  color: black;
+
+  background-color: #00c4cc;
+
+}
+.select:hover{
+  color: black;
+    text-decoration: underline;
+
+
+}
+.menu .opt:hover {
+  background-color: #474747;
+  text-decoration: underline;
+  margin-left: 0.5vw;
+  
+
+}
+
+.icon {
+  margin-right: 0.5vw;
+  height: 1.5vw;
+}
+.select:hover .icon {
+  text-decoration: none;
+}
+.legal {
+  font-size: 0.75vw;
+  color: #aaa;
+  padding: 1vw 1.5vw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4vw;
+}
+
+.legal a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+/* 2. Área principal */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Barra superior */
+.top-bar {
+  background-color: white;
+  padding: 1.5vw 3vw;
+  height: 5.6vw;
+  border-bottom: 0.1vw solid #ccc;
+  color: black;
+  font-size: 0.8vw;
+}
+
+.top-bar h1 {
+  margin-bottom: 15px;
+}
+
+.user-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.user-list {
+  display: flex;
+  gap: 10px;
+}
+
+.user-filter {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: black;
+}
+
+/* 3. Cuerpo del calendario */
+.calendar-body {
+  flex: 1;
+
+}
+
+/* Contenedor del calendario (placeholder por ahora) */
+.calendar-placeholder {
+  background-color: white;
+  height: auto;
+  
+}

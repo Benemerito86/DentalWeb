@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IlernaDental - Iniciar sesión</title>
+
+    <link rel="stylesheet" href="../../CSS/cabecera.css" />
+    <link rel="stylesheet" href="../../CSS/fondo1.css" />
+    <link rel="stylesheet" href="../../../DentalIlerna/CSS/styles.css" />
+    <style>
+      /* Estilo simple para el mensaje de error */
+      #errorMsg {
+        color: red;
+        margin: 10px 0;
+        display: none;
+      }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="brand">iLERNA.</a>
+        <div class="navigation">
+            <div class="navigation-items">
+                <a href="index.html">INICIO</a>
+            </div>
+        </div>
+    </header>
+    <img src="IMG/imagenbutacas1.jpg" alt="Imagen butacas" />
+
+    <!-- Contenido Main -->
+    <main class="main">
+        <div class="login-container">
+            <div class="login-card">
+                <h2 class="login-title">Iniciar sesión</h2>
+
+                <form class="login-form" id="loginForm">
+                    <!-- Campo Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email" id="email" class="form-input" required />
+                    </div>
+
+                    <!-- Campo Contraseña -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="password-container">
+                            <input type="password" id="password" class="form-input" required />
+                            <button type="button" class="show-password-btn" onclick="togglePassword()">Mostrar</button>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de error -->
+                    <p id="errorMsg"></p>
+
+                    <!-- Olvidar contraseña -->
+                    <div class="forgot-password">
+                        <a href="#" class="forgot-link">¿Olvidó su contraseña?</a>
+                    </div>
+
+                    <!-- Boton Login -->
+                    <button type="submit" class="login-btn">Entrar</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const showBtn = document.querySelector('.show-password-btn');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                showBtn.textContent = 'Ocultar';
+            } else {
+                passwordInput.type = 'password';
+                showBtn.textContent = 'Mostrar';
+            }
+        }
+
+        // Escuchar el submit y validar con backend
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.style.display = 'none';
+            errorMsg.textContent = '';
+
+            try {
+                const response = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mail: email, contrasena: password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Login exitoso: redirigir a la página que quieras
+                    window.location.href = '../usuario/inicio.html'; // Cambia esto según tu página destino
+                } else {
+                    // Mostrar mensaje de error devuelto por backend
+                    errorMsg.style.display = 'block';
+                    errorMsg.textContent = data.error || 'Error desconocido';
+                }
+            } catch (error) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Error conectando con el servidor.';
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
