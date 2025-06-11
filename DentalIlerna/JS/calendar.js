@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   const calendarEl = document.getElementById('calendar');
   const formContainer = document.getElementById('form-container');
+  const mainContainer = document.getElementById('main-container');
   const appointmentForm = document.getElementById('appointment-form');
   const cancelButton = document.getElementById('cancel-button');
   const deleteContainer = document.createElement('div'); // Contenedor para eliminar citas
@@ -13,6 +14,18 @@ document.addEventListener('DOMContentLoaded', function () {
       <button id="close-delete-button" class="fc-button">Cancelar</button>
     `;
   document.body.appendChild(deleteContainer);
+
+  // Función para mostrar/ocultar el formulario con centrado adecuado
+  function toggleFormVisibility(show) {
+    if (show) {
+      formContainer.classList.remove('hidden');
+      mainContainer.classList.add('form-visible');
+    } else {
+      formContainer.classList.add('hidden');
+      mainContainer.classList.remove('form-visible');
+      appointmentForm.reset();
+    }
+  }
 
   // Horas visibles en el calendario
   const allowedTimes = [
@@ -42,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
     currentTime = formattedNextTime;
   }
 
+  const FullCalendar = window.FullCalendar; // Declare the FullCalendar variable
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth', // Cambiar a la vista mensual por defecto
     locale: 'es',
@@ -64,62 +78,53 @@ document.addEventListener('DOMContentLoaded', function () {
     dateClick: function (info) {
       if (calendar.view.type === 'dayGridMonth') {
         calendar.changeView('timeGridDay', info.dateStr); // Cambiar a la vista diaria
+      } else {
+        // Si estás ya en vista diaria, abre el formulario directamente
+        const selectedStart = info.date;
+        const selectedEnd = new Date(selectedStart.getTime() + 30 * 60000); // 30 min
+
+        const eventsInSlot = calendar.getEvents().filter(event =>
+          event.start.getTime() === selectedStart.getTime() && !event.allDay
+        );
+
+        if (eventsInSlot.length >= 4) {
+          alert('Ya hay 4 citas en esta franja horaria. Por favor, selecciona otra hora.');
+          return;
+        }
+
+        // Mostrar el formulario usando la nueva función
+        toggleFormVisibility(true);
+
+        appointmentForm.onsubmit = function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById('name').value;
+          const dni = document.getElementById('dni').value;
+          const email = document.getElementById('email').value;
+          const phone = document.getElementById('phone').value;
+          const service = document.getElementById('service').value;
+          const medicalHistory = document.getElementById('medical-history').value;
+
+          if (name && dni && email && phone && service) {
+            calendar.addEvent({
+              title: `${name} (${dni}) - ${service}`,
+              start: selectedStart.toISOString(),
+              end: selectedEnd.toISOString(),
+              allDay: false,
+              extendedProps: {
+                email: email,
+                phone: phone,
+                service: service,
+                medicalHistory: medicalHistory || 'Sin antecedentes médicos'
+              }
+            });
+          }
+
+          // Ocultar el formulario usando la nueva función
+          toggleFormVisibility(false);
+        };
       }
     },
-
-    // Selección en vista de agenda diaria
-    dateClick: function (info) {
-  if (calendar.view.type === 'dayGridMonth') {
-    // Si estás en mes, cambia a día
-    calendar.changeView('timeGridDay', info.dateStr);
-  } else {
-    // Si estás ya en vista diaria, abre el formulario directamente
-    const selectedStart = info.date;
-    const selectedEnd = new Date(selectedStart.getTime() + 30 * 60000); // 30 min
-
-    const eventsInSlot = calendar.getEvents().filter(event =>
-      event.start.getTime() === selectedStart.getTime() && !event.allDay
-    );
-
-    if (eventsInSlot.length >= 4) {
-      alert('Ya hay 4 citas en esta franja horaria. Por favor, selecciona otra hora.');
-      return;
-    }
-
-    formContainer.classList.remove('hidden');
-    calendarEl.style.transform = 'translateX(-10%)';
-
-    appointmentForm.onsubmit = function (e) {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value;
-      const dni = document.getElementById('dni').value;
-      const email = document.getElementById('email').value;
-      const phone = document.getElementById('phone').value;
-      const service = document.getElementById('service').value;
-      const medicalHistory = document.getElementById('medical-history').value;
-
-      if (name && dni && email && phone && service) {
-        calendar.addEvent({
-          title: `${name} (${dni}) - ${service}`,
-          start: selectedStart.toISOString(),
-          end: selectedEnd.toISOString(),
-          allDay: false,
-          extendedProps: {
-            email: email,
-            phone: phone,
-            service: service,
-            medicalHistory: medicalHistory || 'Sin antecedentes médicos'
-          }
-        });
-      }
-
-      formContainer.classList.add('hidden');
-      calendarEl.style.transform = 'translateX(0)';
-      appointmentForm.reset();
-    };
-  }
-},
 
     // Evento para hacer clic en una cita existente
     eventClick: function (info) {
@@ -146,18 +151,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Cerrar el formulario al hacer clic fuera de él
   document.addEventListener('click', function (e) {
-    if (!formContainer.contains(e.target) && !e.target.closest('.fc-event')) {
-      formContainer.classList.add('hidden');
-      calendarEl.style.transform = 'translateX(0)';
-      appointmentForm.reset();
+    if (!formContainer.contains(e.target) && 
+        !e.target.closest('.fc-event') && 
+        !formContainer.classList.contains('hidden')) {
+      toggleFormVisibility(false);
     }
   });
 
+  // Botón cancelar del formulario
   cancelButton.addEventListener('click', function () {
-    formContainer.classList.add('hidden');
-    calendarEl.style.transform = 'translateX(0)';
-    appointmentForm.reset();
+    toggleFormVisibility(false);
   });
+
+  // Inicialmente ocultar el formulario
+  toggleFormVisibility(false);
 
   calendar.render();
 });
