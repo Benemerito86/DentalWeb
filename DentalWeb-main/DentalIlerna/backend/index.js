@@ -29,7 +29,7 @@ console.log('Conectando con:', {
 // Conexión a MySQL
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
-  user: process.env.DB_USER,
+  user: process.env.DB_USER,  
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   port: Number(process.env.DB_PORT)
@@ -111,8 +111,57 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Eliminar usuario
+app.delete('/delete-user/:id', (req, res) => {
+  const userId = req.params.id;
+
+  connection.query('DELETE FROM usuarios WHERE id = ?', [userId], (err, results) => {
+    if (err) {
+      console.error('Error al eliminar usuario:', err);
+      return res.status(500).json({ error: 'Error al eliminar usuario' });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json({ message: 'Usuario eliminado con éxito' });
+  });
+});
+
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
+});
+
+app.get('/get-user/:id', (req, res) => {
+  const id = req.params.id;
+  connection.query('SELECT id, nombre, mail, telefono, antecedentes_medicos FROM usuarios WHERE id = ?', [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Error al obtener usuario' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json(results[0]);
+  });
+});
+
+app.put('/update-user/:id', (req, res) => {
+  const id = req.params.id;
+  const { nombre, telefono, antecedentes } = req.body;
+
+  connection.query(
+    'UPDATE usuarios SET nombre = ?, telefono = ?, antecedentes_medicos = ? WHERE id = ?',
+    [nombre, telefono, antecedentes, id],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error al actualizar usuario' });
+      }
+      res.json({ message: 'Usuario actualizado correctamente' });
+    }
+  );
 });
