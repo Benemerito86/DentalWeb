@@ -4,18 +4,18 @@ document.addEventListener('DOMContentLoaded', function () {
   const mainContainer = document.getElementById('main-container');
   const appointmentForm = document.getElementById('appointment-form');
   const cancelButton = document.getElementById('cancel-button');
-  const deleteContainer = document.createElement('div'); // Contenedor para eliminar citas
+
+  const deleteContainer = document.createElement('div');
   deleteContainer.id = 'delete-container';
   deleteContainer.classList.add('hidden');
   deleteContainer.innerHTML = `
-      <h2>Eliminar Cita</h2>
-      <p id="event-details"></p>
-      <button id="delete-event-button" class="fc-button">Eliminar</button>
-      <button id="close-delete-button" class="fc-button">Cancelar</button>
-    `;
+    <h2>Eliminar Cita</h2>
+    <p id="event-details"></p>
+    <button id="delete-event-button" class="fc-button">Eliminar</button>
+    <button id="close-delete-button" class="fc-button">Cancelar</button>
+  `;
   document.body.appendChild(deleteContainer);
 
-  // Función para mostrar/ocultar el formulario con centrado adecuado
   function toggleFormVisibility(show) {
     if (show) {
       formContainer.classList.remove('hidden');
@@ -27,37 +27,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Horas visibles en el calendario
-  const allowedTimes = [
-    '08:30', '09:00', '09:30', '10:00', '10:30', '11:00',
-    '11:50', '12:20', '12:50', '13:20', '13:50', '14:20',
-    '14:50', '15:00', '15:30', '16:00', '16:30', '17:00',
-    '17:30', '18:20', '18:50', '19:20', '19:50', '20:20'
+  const blockedSlots = [
+    { start: '11:30', end: '12:00' },
+    { start: '18:00', end: '18:30' }
   ];
 
-  // Generar eventos de fondo para ocultar los intervalos no permitidos
-  const hiddenSlots = [];
-  let currentTime = '08:30';
-  while (currentTime !== '21:00') {
-    const nextTime = new Date(`1970-01-01T${currentTime}:00Z`);
-    nextTime.setMinutes(nextTime.getMinutes() + 30);
-    const formattedNextTime = nextTime.toISOString().slice(11, 16);
-
-    if (!allowedTimes.includes(currentTime)) {
-      hiddenSlots.push({
-        start: `1970-01-01T${currentTime}:00`,
-        end: `1970-01-01T${formattedNextTime}:00`,
-        display: 'background',
-        color: '#f0f0f0' // Color para ocultar los intervalos no permitidos
-      });
-    }
-
-    currentTime = formattedNextTime;
-  }
-
-  const FullCalendar = window.FullCalendar; // Declare the FullCalendar variable
+  const FullCalendar = window.FullCalendar;
   const calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth', // Cambiar a la vista mensual por defecto
+    initialView: 'dayGridMonth',
     locale: 'es',
     headerToolbar: {
       left: 'prev,next today',
@@ -66,22 +43,53 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     selectable: true,
     editable: true,
-    slotDuration: '00:10:00',
+    slotDuration: '00:30:00',
     slotLabelInterval: '00:30:00',
     slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
-    slotMinTime: '08:30:00', // Hora de inicio del día
-    slotMaxTime: '21:00:00', // Hora de fin del día
+    slotMinTime: '08:30:00',
+    slotMaxTime: '21:00:00',
     allDaySlot: false,
-    events: hiddenSlots, // Ocultar los intervalos no permitidos
+    dayMaxEvents: false, // para que no muestre "+X más", sino todos (los recortamos con CSS)
+  eventOverlap: true,
+  slotEventOverlap: true,
 
-    // Cambiar a la vista diaria al hacer clic en un día en la vista mensual
-    dateClick: function (info) {
+    events: function(fetchInfo, successCallback) {
+      const events = [];
+      let day = new Date(fetchInfo.start);
+
+      while (day < fetchInfo.end) {
+        const dateStr = day.toISOString().slice(0, 10);
+        blockedSlots.forEach(slot => {
+          events.push({
+            start: `${dateStr}T${slot.start}:00`,
+            end: `${dateStr}T${slot.end}:00`,
+            display: 'background',
+            color: '#ffcccc'
+          });
+        });
+        day.setDate(day.getDate() + 1);
+      }
+
+      successCallback(events);
+    },
+
+    dateClick: function(info) {
       if (calendar.view.type === 'dayGridMonth') {
-        calendar.changeView('timeGridDay', info.dateStr); // Cambiar a la vista diaria
+        calendar.changeView('timeGridDay', info.dateStr);
       } else {
-        // Si estás ya en vista diaria, abre el formulario directamente
         const selectedStart = info.date;
-        const selectedEnd = new Date(selectedStart.getTime() + 30 * 60000); // 30 min
+        const selectedEnd = new Date(selectedStart.getTime() + 30 * 60000);
+
+        // Comprobar si la franja seleccionada coincide con un bloqueo
+        const selectedTime = selectedStart.toTimeString().slice(0,5);
+        const isBlocked = blockedSlots.some(slot => 
+          selectedTime >= slot.start && selectedTime < slot.end
+        );
+
+        if (isBlocked) {
+          alert('No se pueden coger citas en este horario bloqueado.');
+          return;
+        }
 
         const eventsInSlot = calendar.getEvents().filter(event =>
           event.start.getTime() === selectedStart.getTime() && !event.allDay
@@ -92,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
-        // Mostrar el formulario usando la nueva función
         toggleFormVisibility(true);
 
         appointmentForm.onsubmit = function (e) {
@@ -120,51 +127,83 @@ document.addEventListener('DOMContentLoaded', function () {
             });
           }
 
-          // Ocultar el formulario usando la nueva función
           toggleFormVisibility(false);
         };
       }
     },
 
-    // Evento para hacer clic en una cita existente
-    eventClick: function (info) {
+    eventClick: function(info) {
       const event = info.event;
 
-      // Mostrar el contenedor de eliminación
       deleteContainer.classList.remove('hidden');
-      deleteContainer.querySelector('#event-details').textContent = `
-          Cita de ${event.title} el ${event.start.toLocaleString()}
-        `;
+      deleteContainer.querySelector('#event-details').textContent =
+        `Cita de ${event.title} el ${event.start.toLocaleString()}`;
 
-      // Manejar la eliminación del evento
       deleteContainer.querySelector('#delete-event-button').onclick = function () {
-        event.remove(); // Eliminar el evento del calendario
-        deleteContainer.classList.add('hidden'); // Ocultar el contenedor
+        event.remove();
+        deleteContainer.classList.add('hidden');
       };
 
-      // Manejar el cierre del contenedor
       deleteContainer.querySelector('#close-delete-button').onclick = function () {
-        deleteContainer.classList.add('hidden'); // Ocultar el contenedor
+        deleteContainer.classList.add('hidden');
       };
     }
   });
 
-  // Cerrar el formulario al hacer clic fuera de él
   document.addEventListener('click', function (e) {
-    if (!formContainer.contains(e.target) && 
-        !e.target.closest('.fc-event') && 
+    if (!formContainer.contains(e.target) &&
+        !e.target.closest('.fc-event') &&
         !formContainer.classList.contains('hidden')) {
       toggleFormVisibility(false);
     }
   });
 
-  // Botón cancelar del formulario
   cancelButton.addEventListener('click', function () {
     toggleFormVisibility(false);
   });
 
-  // Inicialmente ocultar el formulario
   toggleFormVisibility(false);
-
   calendar.render();
+
+  function ajustarEventos() {
+  // Agrupa los eventos por franja horaria (start.getTime())
+  const eventosPorHora = {};
+
+  document.querySelectorAll('.fc-timegrid-event').forEach(evento => {
+    // Extrae el inicio de la cita
+    const startAttr = evento.getAttribute('data-start');
+    let startTime;
+    if (startAttr) {
+      startTime = startAttr;
+    } else {
+      // fallback: busca el texto de la hora en el slot padre
+      const slot = evento.closest('.fc-timegrid-slot');
+      startTime = slot ? slot.getAttribute('data-time') : '';
+    }
+    if (!startTime) return;
+
+    if (!eventosPorHora[startTime]) eventosPorHora[startTime] = [];
+    eventosPorHora[startTime].push(evento);
+  });
+
+  // Para cada franja, reparte el ancho y posición
+  Object.values(eventosPorHora).forEach(eventos => {
+    eventos.forEach((evento, idx) => {
+      evento.style.width = '25%';
+      evento.style.left = (idx * 25) + '%';
+      evento.style.position = 'absolute';
+      evento.style.margin = '0';
+      evento.style.right = 'auto';
+    });
+  });
+}
+
+// Ejecutar después de cada renderizado de eventos
+calendar.on('eventDidMount', function() {
+  setTimeout(ajustarEventos, 0); // Espera a que FullCalendar pinte todo
+});
+
+// También al cargar el calendario la primera vez
+calendar.render();
+setTimeout(ajustarEventos, 0);
 });

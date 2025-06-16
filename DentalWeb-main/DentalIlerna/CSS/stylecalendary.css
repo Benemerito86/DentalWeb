@@ -323,3 +323,23 @@ h1 {
         font-size: 12px;
     }
 }
+
+/* En la vista diaria: forzamos que cada evento ocupe 25% del ancho */
+.fc-timegrid-event {
+
+  box-sizing: border-box;
+  margin: 0 !important;
+  position: absolute !important;
+}
+
+/* Ajustar margen para que no se superpongan */
+.fc-timegrid-event.fc-event {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* Opcional: para que no se solapen en vertical */
+.fc-timegrid-event {
+  float: left;
+  clear: none;
+}
