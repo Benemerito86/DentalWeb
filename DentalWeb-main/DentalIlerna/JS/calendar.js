@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const FullCalendar = window.FullCalendar;
   const calendar = new FullCalendar.Calendar(calendarEl, {
+    timeZone: 'Europe/Madrid',
     initialView: 'dayGridMonth',
     locale: 'es',
     headerToolbar: {
@@ -42,47 +43,70 @@ document.addEventListener('DOMContentLoaded', function () {
       right: 'dayGridMonth,timeGridDay'
     },
     selectable: true,
-    editable: true,
+    editable: false,
     slotDuration: '00:30:00',
     slotLabelInterval: '00:30:00',
     slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
     slotMinTime: '08:30:00',
     slotMaxTime: '21:00:00',
     allDaySlot: false,
-    dayMaxEvents: false, // para que no muestre "+X más", sino todos (los recortamos con CSS)
-  eventOverlap: true,
-  slotEventOverlap: true,
+    dayMaxEvents: false,
+    eventOverlap: true,
+    slotEventOverlap: true,
 
-    events: function(fetchInfo, successCallback) {
-      const events = [];
-      let day = new Date(fetchInfo.start);
+    // Aquí cargamos las citas desde la BD y también ponemos franjas bloqueadas
+    events: function (fetchInfo, successCallback, failureCallback) {
+      fetch('http://localhost:3000/citas')
+        .then(res => {
+          if (!res.ok) throw new Error('Error al cargar las citas');
+          return res.json();
+        })
+        .then(citas => {
+          const events = [];
 
-      while (day < fetchInfo.end) {
-        const dateStr = day.toISOString().slice(0, 10);
-        blockedSlots.forEach(slot => {
-          events.push({
-            start: `${dateStr}T${slot.start}:00`,
-            end: `${dateStr}T${slot.end}:00`,
-            display: 'background',
-            color: '#ffcccc'
+          // Añadir citas recibidas desde el servidor
+          citas.forEach(cita => {
+            events.push({
+              id: cita.id,
+              title: `${cita.nombre} (${cita.dni}) - ${cita.servicio}`, // Ajusta si tu servidor no envía title
+              start: cita.inicio,
+              end: cita.fin,
+              allDay: false
+            });
           });
-        });
-        day.setDate(day.getDate() + 1);
-      }
 
-      successCallback(events);
+          // Añadir franjas horarias bloqueadas para cada día
+          let day = new Date(fetchInfo.start);
+          while (day < fetchInfo.end) {
+            const dateStr = day.toISOString().slice(0, 10);
+            blockedSlots.forEach(slot => {
+              events.push({
+                start: `${dateStr}T${slot.start}:00`,
+                end: `${dateStr}T${slot.end}:00`,
+                display: 'background',
+                color: '#ffcccc'
+              });
+            });
+            day.setDate(day.getDate() + 1);
+          }
+
+          successCallback(events);
+        })
+        .catch(err => {
+          console.error(err);
+          failureCallback(err);
+        });
     },
 
-    dateClick: function(info) {
+    dateClick: function (info) {
       if (calendar.view.type === 'dayGridMonth') {
         calendar.changeView('timeGridDay', info.dateStr);
       } else {
         const selectedStart = info.date;
         const selectedEnd = new Date(selectedStart.getTime() + 30 * 60000);
 
-        // Comprobar si la franja seleccionada coincide con un bloqueo
-        const selectedTime = selectedStart.toTimeString().slice(0,5);
-        const isBlocked = blockedSlots.some(slot => 
+        const selectedTime = selectedStart.toTimeString().slice(0, 5);
+        const isBlocked = blockedSlots.some(slot =>
           selectedTime >= slot.start && selectedTime < slot.end
         );
 
@@ -105,34 +129,43 @@ document.addEventListener('DOMContentLoaded', function () {
         appointmentForm.onsubmit = function (e) {
           e.preventDefault();
 
-          const name = document.getElementById('name').value;
-          const dni = document.getElementById('dni').value;
-          const email = document.getElementById('email').value;
-          const phone = document.getElementById('phone').value;
-          const service = document.getElementById('service').value;
-          const medicalHistory = document.getElementById('medical-history').value;
+          const cita = {
+            nombre: document.getElementById('name').value,
+            dni: document.getElementById('dni').value,
+            mail: document.getElementById('email').value,
+            telefono: document.getElementById('phone').value,
+            servicio: document.getElementById('service').value,
+            antecedentes: document.getElementById('medical-history').value,
+            inicio: selectedStart.toISOString(),
+            fin: selectedEnd.toISOString()
+          };
 
-          if (name && dni && email && phone && service) {
-            calendar.addEvent({
-              title: `${name} (${dni}) - ${service}`,
-              start: selectedStart.toISOString(),
-              end: selectedEnd.toISOString(),
-              allDay: false,
-              extendedProps: {
-                email: email,
-                phone: phone,
-                service: service,
-                medicalHistory: medicalHistory || 'Sin antecedentes médicos'
+          fetch('http://localhost:3000/add-cita', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cita)
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.id) {
+                calendar.addEvent({
+                  id: data.id,
+                  title: `${cita.nombre} (${cita.dni}) - ${cita.servicio}`,
+                  start: cita.inicio,
+                  end: cita.fin
+                });
               }
+              toggleFormVisibility(false);
+            })
+            .catch(err => {
+              console.error('Error al guardar la cita:', err);
+              alert('Error al guardar la cita');
             });
-          }
-
-          toggleFormVisibility(false);
         };
       }
     },
 
-    eventClick: function(info) {
+    eventClick: function (info) {
       const event = info.event;
 
       deleteContainer.classList.remove('hidden');
@@ -152,8 +185,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.addEventListener('click', function (e) {
     if (!formContainer.contains(e.target) &&
-        !e.target.closest('.fc-event') &&
-        !formContainer.classList.contains('hidden')) {
+      !e.target.closest('.fc-event') &&
+      !formContainer.classList.contains('hidden')) {
       toggleFormVisibility(false);
     }
   });
@@ -166,44 +199,38 @@ document.addEventListener('DOMContentLoaded', function () {
   calendar.render();
 
   function ajustarEventos() {
-  // Agrupa los eventos por franja horaria (start.getTime())
-  const eventosPorHora = {};
+    const eventosPorHora = {};
 
-  document.querySelectorAll('.fc-timegrid-event').forEach(evento => {
-    // Extrae el inicio de la cita
-    const startAttr = evento.getAttribute('data-start');
-    let startTime;
-    if (startAttr) {
-      startTime = startAttr;
-    } else {
-      // fallback: busca el texto de la hora en el slot padre
-      const slot = evento.closest('.fc-timegrid-slot');
-      startTime = slot ? slot.getAttribute('data-time') : '';
-    }
-    if (!startTime) return;
+    document.querySelectorAll('.fc-timegrid-event').forEach(evento => {
+      const startAttr = evento.getAttribute('data-start');
+      let startTime;
+      if (startAttr) {
+        startTime = startAttr;
+      } else {
+        const slot = evento.closest('.fc-timegrid-slot');
+        startTime = slot ? slot.getAttribute('data-time') : '';
+      }
+      if (!startTime) return;
 
-    if (!eventosPorHora[startTime]) eventosPorHora[startTime] = [];
-    eventosPorHora[startTime].push(evento);
-  });
-
-  // Para cada franja, reparte el ancho y posición
-  Object.values(eventosPorHora).forEach(eventos => {
-    eventos.forEach((evento, idx) => {
-      evento.style.width = '25%';
-      evento.style.left = (idx * 25) + '%';
-      evento.style.position = 'absolute';
-      evento.style.margin = '0';
-      evento.style.right = 'auto';
+      if (!eventosPorHora[startTime]) eventosPorHora[startTime] = [];
+      eventosPorHora[startTime].push(evento);
     });
+
+    Object.values(eventosPorHora).forEach(eventos => {
+      eventos.forEach((evento, idx) => {
+        evento.style.width = '25%';
+        evento.style.left = (idx * 25) + '%';
+        evento.style.position = 'absolute';
+        evento.style.margin = '0';
+        evento.style.right = 'auto';
+      });
+    });
+  }
+
+  calendar.on('eventDidMount', function () {
+    setTimeout(ajustarEventos, 0);
   });
-}
 
-// Ejecutar después de cada renderizado de eventos
-calendar.on('eventDidMount', function() {
-  setTimeout(ajustarEventos, 0); // Espera a que FullCalendar pinte todo
-});
-
-// También al cargar el calendario la primera vez
-calendar.render();
-setTimeout(ajustarEventos, 0);
+  calendar.render();
+  setTimeout(ajustarEventos, 0);
 });
