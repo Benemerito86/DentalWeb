@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IlernaDental - Iniciar sesión</title>
+    <link rel="icon" href="../assets/img/icon.png" type="image/x-icon">
+
+
+    <link rel="stylesheet" href="../css/backgroundImage.css">
+
+    <link rel="stylesheet" href="../css/login.css">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="brand">iLERNA.</a>
+    </header>
+    <image href="../assets/img/imagenbutacas1.jpg"></image>
+
+    <!-- Contenido Main -->
+    <main class="main">
+        <div class="login-container">
+            <div class="login-card">
+                <h2 class="login-title">Iniciar sesión</h2>
+
+                <form class="login-form" id="loginForm">
+                    <!-- Campo Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <input type="email" id="email" class="form-input" required />
+                    </div>
+
+                    <!-- Campo Contraseña -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="password-container">
+                            <input type="password" id="password" class="form-input" required />
+                            <button type="button" class="show-password-btn" onclick="togglePassword()">Mostrar</button>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de error -->
+                    <p id="errorMsg"></p>
+
+                    <!-- Olvidar contraseña -->
+                    <div class="forgot-password">
+                        <a href="sesion/recordarContrasena.html" class="forgot-link">¿Olvidó su contraseña?</a>
+                    </div>
+
+                    <!-- Boton Login -->
+                    <button type="submit" class="login-btn">Entrar</button>
+                    <p id="noaccount">¿No tienes cuenta? - <a href="sesion/crearCuenta.html">Crea una</a></p>
+                    <a class="button" href="usuario/inicio.html">Paciente</a>
+                    <a class="button" href="alumno/inicio.html">Alumno</a>
+                    <a class="button" href="profesor/inicio.html">Profesor</a>
+                    <a class="button" href="admin/inicio.html">Administrador</a>
+
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const showBtn = document.querySelector('.show-password-btn');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                showBtn.textContent = 'Ocultar';
+            } else {
+                passwordInput.type = 'password';
+                showBtn.textContent = 'Mostrar';
+            }
+        }
+
+        // Escuchar el submit y validar con backend
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.style.display = 'none';
+            errorMsg.textContent = '';
+
+            try {
+                const response = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mail: email, contrasena: password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Guardar userId y rol
+                    localStorage.setItem('userId', data.userId); // opcional
+
+                    localStorage.setItem('rol', data.rol); // opcional
+
+                    alert(`✅ Login exitoso ${data.userId}`);
+
+                    // Redirigir al inicio correspondiente por rol
+                    window.location.href = `${data.rol}/inicio.html`;
+                } else {
+                    errorMsg.style.display = 'block';
+                    errorMsg.textContent = data.error || 'Error desconocido';
+                }
+
+            } catch (error) {
+                errorMsg.style.display = 'block';
+                errorMsg.textContent = 'Error conectando con el servidor.';
+                console.error(error);
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>
