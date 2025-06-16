@@ -107,7 +107,8 @@ app.post('/login', (req, res) => {
       return res.status(400).json({ error: 'Contrasena incorrecta' });
     }
 
-    res.json({ message: 'Login exitoso', userId: user.id });
+    // 🔽 Aquí devolvemos el rol también
+    res.json({ message: 'Login exitoso', userId: user.id, rol: user.rol });
   });
 });
 
@@ -172,5 +173,74 @@ app.put('/update-user/:id', (req, res) => {
     }
   );
 });
+
+// Guardar una nueva cita
+app.post('/add-cita', (req, res) => {
+  const { nombre, dni, mail, telefono, servicio, antecedentes, inicio, fin } = req.body;
+
+  if (!nombre || !dni || !mail || !telefono || !servicio || !inicio || !fin) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  }
+
+  connection.query(
+    'INSERT INTO citas (nombre, dni, mail, telefono, servicio, antecedentes, inicio, fin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    [nombre, dni, mail, telefono, servicio, antecedentes || 'Sin antecedentes', inicio, fin],
+    (err, result) => {
+      if (err) {
+        console.error('❌ Error al guardar la cita:', err);
+        return res.status(500).json({ error: 'Error al guardar la cita' });
+      }
+      res.status(201).json({ message: 'Cita guardada con éxito', id: result.insertId });
+    }
+  );
+});
+
+// Obtener todas las citas
+app.get('/citas', (req, res) => {
+  connection.query('SELECT * FROM citas', (err, results) => {
+    if (err) {
+      console.error('❌ Error al obtener citas:', err);
+      return res.status(500).json({ error: 'Error al obtener citas' });
+    }
+    res.json(results);
+  });
+});
+
+// Eliminar una cita
+app.delete('/delete-cita/:id', (req, res) => {
+  const citaId = req.params.id;
+  connection.query('DELETE FROM citas WHERE id = ?', [citaId], (err, result) => {
+    if (err) {
+      console.error('❌ Error al eliminar cita:', err);
+      return res.status(500).json({ error: 'Error al eliminar cita' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Cita no encontrada' });
+    }
+    res.json({ message: 'Cita eliminada correctamente' });
+  });
+});
+
+app.get('/citas', (req, res) => {
+  connection.query(
+    'SELECT id, nombre, dni, servicio, inicio AS start, fin AS end FROM citas',
+    (err, results) => {
+      if (err) {
+        console.error('Error al obtener citas:', err);
+        return res.status(500).json({ error: 'Error al obtener citas' });
+      }
+
+      const eventos = results.map(row => ({
+        id: row.id,
+        title: `${row.nombre} (${row.dni}) - ${row.servicio}`,
+        start: row.start,
+        end: row.end
+      }));
+
+      res.json(eventos);
+    }
+  );
+});
+
 
 

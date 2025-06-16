@@ -149,11 +149,15 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Guardar el userId que el backend debe devolverte
-                    localStorage.setItem('userId', data.userId);
+                    // Guardar userId y rol
+                    localStorage.setItem('userId', data.userId); // opcional
 
-                    alert('✅ Login exitoso');
-                    window.location.href = 'usuario/inicio.html'; // Cambia esto según tu página destino
+                    localStorage.setItem('rol', data.rol); // opcional
+
+                    alert(`✅ Login exitoso ${data.userId}`);
+
+                    // Redirigir al inicio correspondiente por rol
+                    window.location.href = `${data.rol}/inicio.html`;
                 } else {
                     errorMsg.style.display = 'block';
                     errorMsg.textContent = data.error || 'Error desconocido';
