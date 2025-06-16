@@ -137,7 +137,7 @@ app.listen(PORT, () => {
 
 app.get('/get-user/:id', (req, res) => {
   const id = req.params.id;
-  connection.query('SELECT id, nombre, mail, telefono, antecedentes_medicos FROM usuarios WHERE id = ?', [id], (err, results) => {
+connection.query('SELECT id, nombre, dni, mail, telefono, antecedentes_medicos FROM usuarios WHERE id = ?', [id], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ error: 'Error al obtener usuario' });
@@ -145,17 +145,24 @@ app.get('/get-user/:id', (req, res) => {
     if (results.length === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
+    console.log('Usuario desde BD:', results[0]);
     res.json(results[0]);
   });
 });
 
+
 app.put('/update-user/:id', (req, res) => {
   const id = req.params.id;
-  const { nombre, telefono, antecedentes } = req.body;
+  const { nombre, dni, telefono, antecedentes } = req.body;  
+
+  // Validar al menos un campo para actualizar
+  if (![nombre, telefono, antecedentes, dni].some(v => v !== undefined)) {
+    return res.status(400).json({ error: 'Al menos un campo debe ser enviado para actualizar' });
+  }
 
   connection.query(
-    'UPDATE usuarios SET nombre = ?, telefono = ?, antecedentes_medicos = ? WHERE id = ?',
-    [nombre, telefono, antecedentes, id],
+    'UPDATE usuarios SET nombre = ?, telefono = ?, antecedentes_medicos = ?, dni = ? WHERE id = ?',
+    [nombre, telefono, antecedentes, dni, id], 
     (err, result) => {
       if (err) {
         console.error(err);
@@ -165,3 +172,5 @@ app.put('/update-user/:id', (req, res) => {
     }
   );
 });
+
+

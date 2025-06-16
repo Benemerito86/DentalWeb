@@ -57,10 +57,12 @@
         <div class="perfil-placeholder">
           <!-- Aquí irá el calendario -->
           <img src="../../assets/img/profilepicture.webp" alt="">
-          <input type="text" id="name" value="Nombre Apellido">
-          <input type="text" id="DNI" value="12345678A">
-          <input type="text" id="email" value="a@gmail.com" disabled>
-          <input type="text" id="phone" value="123456789">
+          <input type="text" id="name" placeholder="Introduce tu nombre">
+          <input type="text" id="dni" placeholder="Introduce tu DNI">
+          <input type="text" id="email" disabled>
+          <input type="text" id="phone" placeholder="Introduce tu teléfono">
+
+
           <label for="antecedentes">Antecedentes médicos: </label>
           <div class="custom-file-wrapper">
             <label for="antecedentes" class="custom-file-label">📁 Seleccionar archivo</label>
@@ -97,7 +99,9 @@
         const data = await res.json();
 
         if (res.ok) {
+          console.log(data);
           document.getElementById('name').value = data.nombre || '';
+          document.getElementById('dni').value = data.dni || '';
           document.getElementById('email').value = data.mail || '';
           document.getElementById('phone').value = data.telefono || '';
           // Si tienes dni: document.getElementById('DNI').value = data.dni || '';
@@ -119,9 +123,9 @@
 
       const updatedData = {
         nombre: document.getElementById('name').value.trim(),
+        dni: document.getElementById('dni').value.trim(),
         telefono: document.getElementById('phone').value.trim(),
-        antecedentes: '' // Aquí enviarías el nombre del archivo si quieres
-        // dni: document.getElementById('DNI').value.trim()
+        antecedentes: ''
       };
 
       try {
