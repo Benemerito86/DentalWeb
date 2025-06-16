@@ -1,0 +1,28 @@
+
+
+/* 3. Cuerpo del calendario */
+.calendar-body {
+   flex: 1;
+  overflow-y: auto; /* permite el scroll vertical */
+  max-height: calc(100vh - 5.6vw);
+}
+
+#calendar {
+  background-color: white;
+  border: 1em solid white;
+  border-radius: 1em;
+  margin: 40vw;
+}
+
+/* Contenedor del calendario (placeholder por ahora) */
+.calendar-placeholder {
+  height: auto; 
+}
+
+#main-container {
+  
+  box-sizing: border-box;
+  max-width: 100vw;
+  overflow-x: hidden;
+  
+}
