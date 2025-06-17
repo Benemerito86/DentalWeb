@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
       right: 'dayGridMonth,timeGridDay'
     },
     selectable: true,
-    editable: true,
+    editable: false,
     slotDuration: '00:30:00',
     slotLabelInterval: '00:30:00',
     slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
     eventOverlap: true,
     slotEventOverlap: true,
 
+    // Aquí cargamos las citas desde la BD y también ponemos franjas bloqueadas
     events: function (fetchInfo, successCallback, failureCallback) {
       fetch('http://localhost:3000/citas')
         .then(res => {
@@ -63,29 +64,46 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(citas => {
           const events = [];
 
+          // Añadir citas recibidas desde el servidor
           citas.forEach(cita => {
             events.push({
               id: cita.id,
-              title: `${cita.nombre} (${cita.dni}) - ${cita.servicio}`,
+              title: `${cita.nombre} (${cita.dni}) - ${cita.servicio}`, // Ajusta si tu servidor no envía title
               start: cita.inicio,
               end: cita.fin,
               allDay: false
             });
           });
 
+          // Añadir franjas horarias bloqueadas para cada día
           let day = new Date(fetchInfo.start);
-          while (day < fetchInfo.end) {
-            const dateStr = day.toISOString().slice(0, 10);
-            blockedSlots.forEach(slot => {
-              events.push({
-                start: `${dateStr}T${slot.start}:00`,
-                end: `${dateStr}T${slot.end}:00`,
-                display: 'background',
-                color: '#ffcccc'
-              });
-            });
-            day.setDate(day.getDate() + 1);
-          }
+while (day < fetchInfo.end) {
+  blockedSlots.forEach(slot => {
+    const start = new Date(
+      day.getFullYear(),
+      day.getMonth(),
+      day.getDate(),
+      parseInt(slot.start.split(':')[0], 10),
+      parseInt(slot.start.split(':')[1], 10)
+    );
+
+    const end = new Date(
+      day.getFullYear(),
+      day.getMonth(),
+      day.getDate(),
+      parseInt(slot.end.split(':')[0], 10),
+      parseInt(slot.end.split(':')[1], 10)
+    );
+
+    events.push({
+      start: start.toISOString(),
+      end: end.toISOString(),
+      display: 'background',
+      color: '#f02f30'
+    });
+  });
+  day.setDate(day.getDate() + 1);
+}
 
           successCallback(events);
         })
@@ -101,8 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         const selectedStart = info.date;
         const selectedEnd = new Date(selectedStart.getTime() + 30 * 60000);
-        const selectedTime = selectedStart.toTimeString().slice(0, 5);
 
+        const selectedTime = selectedStart.toTimeString().slice(0, 5);
         const isBlocked = blockedSlots.some(slot =>
           selectedTime >= slot.start && selectedTime < slot.end
         );
@@ -166,11 +184,11 @@ document.addEventListener('DOMContentLoaded', function () {
       const event = info.event;
 
       deleteContainer.classList.remove('hidden');
-      deleteContainer.querySelector('#event-details').textContent =
-        `Cita de ${event.title} el ${event.start.toLocaleString()}`;
+      const adjustedDate = new Date(event.start.getTime() - 2 * 60 * 60 * 1000);
+deleteContainer.querySelector('#event-details').textContent =
+  `Cita de ${event.title} el ${adjustedDate.toLocaleString()}`;
 
       deleteContainer.querySelector('#delete-event-button').onclick = function () {
-        // Aquí deberías añadir la petición DELETE a tu backend si lo necesitas
         event.remove();
         deleteContainer.classList.add('hidden');
       };
@@ -178,10 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
       deleteContainer.querySelector('#close-delete-button').onclick = function () {
         deleteContainer.classList.add('hidden');
       };
-    },
-
-    eventDidMount: function () {
-      setTimeout(ajustarEventos, 0);
     }
   });
 
@@ -196,6 +210,9 @@ document.addEventListener('DOMContentLoaded', function () {
   cancelButton.addEventListener('click', function () {
     toggleFormVisibility(false);
   });
+
+  toggleFormVisibility(false);
+  calendar.render();
 
   function ajustarEventos() {
     const eventosPorHora = {};
@@ -226,7 +243,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  toggleFormVisibility(false);
+  calendar.on('eventDidMount', function () {
+    setTimeout(ajustarEventos, 0);
+  });
+
   calendar.render();
   setTimeout(ajustarEventos, 0);
 });

@@ -184,8 +184,9 @@ while (day < fetchInfo.end) {
       const event = info.event;
 
       deleteContainer.classList.remove('hidden');
-      deleteContainer.querySelector('#event-details').textContent =
-        `Cita de ${event.title} el ${event.start.toLocaleString()}`;
+      const adjustedDate = new Date(event.start.getTime() - 2 * 60 * 60 * 1000);
+deleteContainer.querySelector('#event-details').textContent =
+  `Cita de ${event.title} el ${adjustedDate.toLocaleString()}`;
 
       deleteContainer.querySelector('#delete-event-button').onclick = function () {
         event.remove();

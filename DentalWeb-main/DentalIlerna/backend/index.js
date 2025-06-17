@@ -242,5 +242,51 @@ app.get('/citas', (req, res) => {
   );
 });
 
+// Guardar un día bloqueado
+app.post('/add-bloqueo', (req, res) => {
+  const { fecha } = req.body;
+
+  if (!fecha) {
+    return res.status(400).json({ error: 'La fecha es obligatoria' });
+  }
+
+  connection.query(
+    'INSERT INTO bloqueos (fecha) VALUES (?)',
+    [fecha],
+    (err, result) => {
+      if (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+          return res.status(409).json({ error: 'El día ya está bloqueado' });
+        }
+        console.error('❌ Error al guardar bloqueo:', err);
+        return res.status(500).json({ error: 'Error al guardar bloqueo' });
+      }
+      res.status(201).json({ message: 'Día bloqueado con éxito', id: result.insertId });
+    }
+  );
+});
+
+// Obtener días bloqueados (formato para el calendario)
+app.get('/bloqueos', (req, res) => {
+  connection.query(
+    'SELECT id, fecha FROM bloqueos',
+    (err, results) => {
+      if (err) {
+        console.error('❌ Error al obtener bloqueos:', err);
+        return res.status(500).json({ error: 'Error al obtener bloqueos' });
+      }
+
+      const eventos = results.map(row => ({
+        id: `bloqueo-${row.id}`,
+        title: 'Día bloqueado',
+        start: row.fecha,
+        end: row.fecha,
+        color: 'red'  // opcional: para que se vea distinto en el FullCalendar
+      }));
+
+      res.json(eventos);
+    }
+  );
+});
 
 
