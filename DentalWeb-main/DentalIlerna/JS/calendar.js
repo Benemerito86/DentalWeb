@@ -77,18 +77,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // Añadir franjas horarias bloqueadas para cada día
           let day = new Date(fetchInfo.start);
-          while (day < fetchInfo.end) {
-            const dateStr = day.getFullYear() + '-' + String(day.getMonth() + 1).padStart(2, '0') + '-' + String(day.getDate()).padStart(2, '0');
-            blockedSlots.forEach(slot => {
-              events.push({
-                start: `${dateStr}T${slot.start}:00`,
-                end: `${dateStr}T${slot.end}:00`,
-                display: 'background',
-                color: '#f02f30'
-              });
-            });
-            day.setDate(day.getDate() + 1);
-          }
+while (day < fetchInfo.end) {
+  blockedSlots.forEach(slot => {
+    const start = new Date(
+      day.getFullYear(),
+      day.getMonth(),
+      day.getDate(),
+      parseInt(slot.start.split(':')[0], 10),
+      parseInt(slot.start.split(':')[1], 10)
+    );
+
+    const end = new Date(
+      day.getFullYear(),
+      day.getMonth(),
+      day.getDate(),
+      parseInt(slot.end.split(':')[0], 10),
+      parseInt(slot.end.split(':')[1], 10)
+    );
+
+    events.push({
+      start: start.toISOString(),
+      end: end.toISOString(),
+      display: 'background',
+      color: '#f02f30'
+    });
+  });
+  day.setDate(day.getDate() + 1);
+}
 
           successCallback(events);
         })
