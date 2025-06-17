@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
           // Añadir franjas horarias bloqueadas para cada día
           let day = new Date(fetchInfo.start);
           while (day < fetchInfo.end) {
-            const dateStr = day.toISOString().slice(0, 10);
+            const dateStr = day.getFullYear() + '-' + String(day.getMonth() + 1).padStart(2, '0') + '-' + String(day.getDate()).padStart(2, '0');
             blockedSlots.forEach(slot => {
               events.push({
                 start: `${dateStr}T${slot.start}:00`,
