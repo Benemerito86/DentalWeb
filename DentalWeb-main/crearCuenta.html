@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IlernaDental - Iniciar sesión</title>
+    <link rel="icon" href="../../assets/img/icon.png" type="image/x-icon">
+
+
+    <link rel="stylesheet" href="../../css/backgroundImage.css">
+    <link rel="stylesheet" href="../../css/login.css" >
+    <link rel="stylesheet" href="../../css/privacity.css">
+
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="../index.html" class="brand">iLERNA.</a>
+    </header>
+    <image href="../../../assets/img/imagenbutacas1.jpg"></image>
+
+    <!-- Contenido Main -->
+    <main class="main">
+    <div class="login-container">
+      <div class="login-card">
+        <h2 class="login-title">Crear cuenta</h2>
+
+        <form class="login-form" id="registerForm"> <!-- ✅ Agregado id para referenciar luego -->
+          <div class="form-group">
+            <label for="mail" class="form-label">Correo electrónico</label>
+            <input type="email" id="mail" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contrasena" class="form-label">Contraseña</label>
+                        <div class="password-container">
+                            <input type="password" id="contrasena" class="form-input" required>
+                            <button type="button" class="show-password-btn" onclick="togglePassword()">Mostrar</button>
+                        </div>
+                    </div>
+          <p><a href="#" id="verPdf">Leer términos y condiciones</a></p>
+
+          <div id="modalPdf" class="modal">
+            <div class="modal-content">
+              <span class="close" id="cerrarModal">&times;</span>
+              <h3>Términos y condiciones</h3>
+              <iframe src="../../assets/pdf/terminos.pdf"></iframe>
+            </div>
+          </div>
+
+          <div style="margin-top: 20px;">
+            <input type="checkbox" id="aceptar" disabled>
+            <label for="aceptar">He leído y acepto los términos y condiciones</label>
+          </div>
+
+          <button type="submit" class="login-btn" id="continuar" disabled>Crear</button>
+          <p id="noaccount">¿Ya tienes cuenta? - <a href="../index.html">Inicia sesión</a></p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  
+
+  <!-- ✅ Script corregido y movido al final -->
+  <script>
+    const form = document.getElementById('registerForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const mail = document.getElementById('mail').value;
+      const contrasena = document.getElementById('contrasena').value;
+
+      try {
+        const res = await fetch('http://localhost:3000/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ mail, contrasena })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert('✅ Usuario creado con éxito');
+          window.location.href = `../index.html`;
+
+        } else {
+          alert('❌ Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('❌ Error de conexión');
+        console.error(error);
+      }
+    });
+  </script>
+
+    <script src="../../js/terminos.js"></script>
+
+</body>
+</html>
+
+
