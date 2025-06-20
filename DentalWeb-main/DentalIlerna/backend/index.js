@@ -268,25 +268,14 @@ app.post('/add-bloqueo', (req, res) => {
 
 // Obtener días bloqueados (formato para el calendario)
 app.get('/bloqueos', (req, res) => {
-  connection.query(
-    'SELECT id, fecha FROM bloqueos',
-    (err, results) => {
-      if (err) {
-        console.error('❌ Error al obtener bloqueos:', err);
-        return res.status(500).json({ error: 'Error al obtener bloqueos' });
-      }
-
-      const eventos = results.map(row => ({
-        id: `bloqueo-${row.id}`,
-        title: 'Día bloqueado',
-        start: row.fecha,
-        end: row.fecha,
-        color: 'red'  // opcional: para que se vea distinto en el FullCalendar
-      }));
-
-      res.json(eventos);
+  const query = 'SELECT id, fecha FROM bloqueos';
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error al obtener bloqueos:', error);
+      return res.status(500).json({ error: 'Error al obtener bloqueos' });
     }
-  );
+    res.json(results); // debe enviar un array con bloqueos [{id, fecha}, ...]
+  });
 });
 
 

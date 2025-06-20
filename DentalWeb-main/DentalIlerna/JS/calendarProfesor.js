@@ -5,6 +5,21 @@ document.addEventListener('DOMContentLoaded', function () {
   const appointmentForm = document.getElementById('appointment-form');
   const cancelButton = document.getElementById('cancel-button');
 
+  // Crear botón para activar/desactivar modo bloqueo
+  const toggleBloqueoButton = document.createElement('button');
+  toggleBloqueoButton.id = 'toggle-bloqueo-button';
+  toggleBloqueoButton.textContent = 'Modo Bloqueo: OFF';
+  toggleBloqueoButton.style.margin = '10px';
+  calendarEl.parentNode.insertBefore(toggleBloqueoButton, calendarEl);
+
+  let modoBloqueo = false;
+
+  toggleBloqueoButton.addEventListener('click', () => {
+    modoBloqueo = !modoBloqueo;
+    toggleBloqueoButton.textContent = `Modo Bloqueo: ${modoBloqueo ? 'ON' : 'OFF'}`;
+    toggleBloqueoButton.style.backgroundColor = modoBloqueo ? '#ff5555' : '';
+  });
+
   const deleteContainer = document.createElement('div');
   deleteContainer.id = 'delete-container';
   deleteContainer.classList.add('hidden');
@@ -54,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
     eventOverlap: true,
     slotEventOverlap: true,
 
-    // Aquí cargamos las citas desde la BD y también ponemos franjas bloqueadas
+    // Cargar citas y franjas bloqueadas
     events: function (fetchInfo, successCallback, failureCallback) {
       fetch('http://localhost:3000/citas')
         .then(res => {
@@ -68,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
           citas.forEach(cita => {
             events.push({
               id: cita.id,
-              title: `${cita.nombre} (${cita.dni}) - ${cita.servicio}`, // Ajusta si tu servidor no envía title
+              title: `${cita.nombre} (${cita.dni}) - ${cita.servicio}`,
               start: cita.inicio,
               end: cita.fin,
               allDay: false
@@ -77,35 +92,59 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // Añadir franjas horarias bloqueadas para cada día
           let day = new Date(fetchInfo.start);
-while (day < fetchInfo.end) {
-  blockedSlots.forEach(slot => {
-    const start = new Date(
-      day.getFullYear(),
-      day.getMonth(),
-      day.getDate(),
-      parseInt(slot.start.split(':')[0], 10),
-      parseInt(slot.start.split(':')[1], 10)
-    );
+          while (day < fetchInfo.end) {
+            blockedSlots.forEach(slot => {
+              const start = new Date(
+                day.getFullYear(),
+                day.getMonth(),
+                day.getDate(),
+                parseInt(slot.start.split(':')[0], 10),
+                parseInt(slot.start.split(':')[1], 10)
+              );
 
-    const end = new Date(
-      day.getFullYear(),
-      day.getMonth(),
-      day.getDate(),
-      parseInt(slot.end.split(':')[0], 10),
-      parseInt(slot.end.split(':')[1], 10)
-    );
+              const end = new Date(
+                day.getFullYear(),
+                day.getMonth(),
+                day.getDate(),
+                parseInt(slot.end.split(':')[0], 10),
+                parseInt(slot.end.split(':')[1], 10)
+              );
 
-    events.push({
-      start: start.toISOString(),
-      end: end.toISOString(),
-      display: 'background',
-      color: '#f02f30'
-    });
-  });
-  day.setDate(day.getDate() + 1);
-}
+              events.push({
+                start: start.toISOString(),
+                end: end.toISOString(),
+                display: 'background',
+                color: '#f02f30'
+              });
+            });
+            day.setDate(day.getDate() + 1);
+          }
 
-          successCallback(events);
+          // Añadir días bloqueados completos (allDay) desde el backend
+          fetch('http://localhost:3000/bloqueos')
+            .then(res => {
+              if (!res.ok) throw new Error('Error al cargar bloqueos');
+              return res.json();
+            })
+            .then(bloqueos => {
+              bloqueos.forEach(b => {
+                if (b.fecha) {
+                  events.push({
+                    id: `bloqueo-${b.id}`,
+                    title: 'Día bloqueado',
+                    start: b.fecha,
+                    end: b.fecha,
+                    allDay: true,
+                    color: 'red'
+                  });
+                }
+              });
+              successCallback(events);
+            })
+            .catch(err => {
+              console.error(err);
+              successCallback(events); // aunque fallen bloqueos, mostrar citas
+            });
         })
         .catch(err => {
           console.error(err);
@@ -114,70 +153,106 @@ while (day < fetchInfo.end) {
     },
 
     dateClick: function (info) {
-      if (calendar.view.type === 'dayGridMonth') {
-        calendar.changeView('timeGridDay', info.dateStr);
-      } else {
-        const selectedStart = info.date;
-        const selectedEnd = new Date(selectedStart.getTime() + 30 * 60000);
+      const isMonthView = calendar.view.type === 'dayGridMonth';
 
-        const selectedTime = selectedStart.toTimeString().slice(0, 5);
-        const isBlocked = blockedSlots.some(slot =>
-          selectedTime >= slot.start && selectedTime < slot.end
-        );
+      if (modoBloqueo && isMonthView) {
+        // Bloquear día entero
+        const fechaBloqueada = info.dateStr;
 
-        if (isBlocked) {
-          alert('No se pueden coger citas en este horario bloqueado.');
-          return;
-        }
-
-        const eventsInSlot = calendar.getEvents().filter(event =>
-          event.start.getTime() === selectedStart.getTime() && !event.allDay
-        );
-
-        if (eventsInSlot.length >= 4) {
-          alert('Ya hay 4 citas en esta franja horaria. Por favor, selecciona otra hora.');
-          return;
-        }
-
-        toggleFormVisibility(true);
-
-        appointmentForm.onsubmit = function (e) {
-          e.preventDefault();
-
-          const cita = {
-            nombre: document.getElementById('name').value,
-            dni: document.getElementById('dni').value,
-            mail: document.getElementById('email').value,
-            telefono: document.getElementById('phone').value,
-            servicio: document.getElementById('service').value,
-            antecedentes: document.getElementById('medical-history').value,
-            inicio: selectedStart.toISOString(),
-            fin: selectedEnd.toISOString()
-          };
-
-          fetch('http://localhost:3000/add-cita', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(cita)
+        fetch('http://localhost:3000/add-bloqueo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fecha: fechaBloqueada })
+        })
+          .then(res => {
+            if (!res.ok) throw new Error('Ya está bloqueado o error en el servidor');
+            return res.json();
           })
-            .then(response => response.json())
-            .then(data => {
-              if (data.id) {
-                calendar.addEvent({
-                  id: data.id,
-                  title: `${cita.nombre} (${cita.dni}) - ${cita.servicio}`,
-                  start: cita.inicio,
-                  end: cita.fin
-                });
-              }
-              toggleFormVisibility(false);
-            })
-            .catch(err => {
-              console.error('Error al guardar la cita:', err);
-              alert('Error al guardar la cita');
+          .then(data => {
+            calendar.addEvent({
+              id: `bloqueo-${data.id}`,
+              title: 'Día bloqueado',
+              start: fechaBloqueada + 'T09:00:00',
+              end: fechaBloqueada + 'T21:00:00',
+              allDay: false,
+              color: 'red'
             });
-        };
+            alert('Día bloqueado con éxito');
+          })
+          .catch(err => {
+            alert('Error al bloquear día: ' + err.message);
+          });
+
+        return; // no hacer nada más
       }
+
+      if (isMonthView) {
+        calendar.changeView('timeGridDay', info.dateStr);
+        return;
+      }
+
+      // Si no estamos en modo bloqueo, gestionar creación de citas
+
+      const selectedStart = info.date;
+      const selectedEnd = new Date(selectedStart.getTime() + 30 * 60000);
+
+      const selectedTime = selectedStart.toTimeString().slice(0, 5);
+      const isBlocked = blockedSlots.some(slot =>
+        selectedTime >= slot.start && selectedTime < slot.end
+      );
+
+      if (isBlocked) {
+        alert('No se pueden coger citas en este horario bloqueado.');
+        return;
+      }
+
+      const eventsInSlot = calendar.getEvents().filter(event =>
+        event.start.getTime() === selectedStart.getTime() && !event.allDay
+      );
+
+      if (eventsInSlot.length >= 4) {
+        alert('Ya hay 4 citas en esta franja horaria. Por favor, selecciona otra hora.');
+        return;
+      }
+
+      toggleFormVisibility(true);
+
+      appointmentForm.onsubmit = function (e) {
+        e.preventDefault();
+
+        const cita = {
+          nombre: document.getElementById('name').value,
+          dni: document.getElementById('dni').value,
+          mail: document.getElementById('email').value,
+          telefono: document.getElementById('phone').value,
+          servicio: document.getElementById('service').value,
+          antecedentes: document.getElementById('medical-history').value,
+          inicio: selectedStart.toISOString(),
+          fin: selectedEnd.toISOString()
+        };
+
+        fetch('http://localhost:3000/add-cita', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(cita)
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.id) {
+              calendar.addEvent({
+                id: data.id,
+                title: `${cita.nombre} (${cita.dni}) - ${cita.servicio}`,
+                start: cita.inicio,
+                end: cita.fin
+              });
+            }
+            toggleFormVisibility(false);
+          })
+          .catch(err => {
+            console.error('Error al guardar la cita:', err);
+            alert('Error al guardar la cita');
+          });
+      };
     },
 
     eventClick: function (info) {
@@ -185,8 +260,8 @@ while (day < fetchInfo.end) {
 
       deleteContainer.classList.remove('hidden');
       const adjustedDate = new Date(event.start.getTime() - 2 * 60 * 60 * 1000);
-deleteContainer.querySelector('#event-details').textContent =
-  `Cita de ${event.title} el ${adjustedDate.toLocaleString()}`;
+      deleteContainer.querySelector('#event-details').textContent =
+        `Cita de ${event.title} el ${adjustedDate.toLocaleString()}`;
 
       deleteContainer.querySelector('#delete-event-button').onclick = function () {
         event.remove();
@@ -247,6 +322,5 @@ deleteContainer.querySelector('#event-details').textContent =
     setTimeout(ajustarEventos, 0);
   });
 
-  calendar.render();
   setTimeout(ajustarEventos, 0);
 });

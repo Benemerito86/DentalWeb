@@ -16,28 +16,22 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 
-
-
   <link rel="stylesheet" href="../../css/styleinicio.css">
   <link rel="stylesheet" href="../../../DentalIlerna/css/stylecalendario.css" />
   <link rel="stylesheet" href="../../css/stylecalendary.css">
-
   <link rel="stylesheet" href="../../css/backgroundImage.css" />
 
 </head>
 
 <body>
   <div class="layout">
-    <!-- 1. Sidebar -->
+    <!-- Sidebar -->
     <aside class="sidebar">
-      <!-- Parte azul superior -->
       <div class="sidebar-header">
         <a href="inicio.html">
           <img id="logo" src="https://campus.ilerna.com/branding/_1_1/CustomNavigationLogo.png?m=m029883y" alt="">
         </a>
       </div>
-
-      <!-- Menú de navegación -->
       <nav class="menu">
         <ul>
           <a class="opt" href="perfil.html">
@@ -46,33 +40,26 @@
           <a class="select" href="calendario.html">
             <image class="icon" src="../../assets/img/calendarBlack.png">Calendario
           </a>
-
           <a class="opt" href="../index.html">
             <image src="../../assets/img/logoutPicW.png" class="icon">Cerrar Sesión
           </a>
-
         </ul>
       </nav>
-
-      <!-- Enlaces legales -->
       <div class="legal">
         <p><a href="../../assets/pdf/terminos.pdf" target="_blank">Privacidad</a></p>
         <p><a href="../../assets/pdf/terminos.pdf" target="_blank">Condiciones</a></p>
       </div>
     </aside>
 
-    <!-- 2. Área principal -->
+    <!-- Área principal -->
     <div class="main-area">
-      <!-- Barra superior -->
       <header class="top-bar">
         <h1>Calendario de Citas - Higiene Bucodental</h1>
       </header>
 
-      <!-- Contenido del calendario -->
       <section class="calendar-body">
         <div class="calendar-placeholder">
           <div id="main-container">
-            <button id="toggle-bloqueo-button" class="fc-button">Modo Bloqueo: OFF</button>
             <div id="calendar"></div>
             <div id="form-container" class="hidden">
               <h2>Registrar Cita</h2>
@@ -99,7 +86,6 @@
                 <textarea id="medical-history" name="medical-history" rows="3"
                   placeholder="Escribe aquí si hay antecedentes médicos..."></textarea>
 
-                <!-- Separador para crear espacio antes de los botones -->
                 <div class="button-container">
                   <button type="submit" class="fc-button">Guardar</button>
                   <button type="button" id="cancel-button" class="fc-button">Cancelar</button>
