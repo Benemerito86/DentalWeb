@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pacientes</title>
+  <link rel="icon" href="../../assets/img/icon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="../../css/backgroundImage.css"/>
+  <link rel="stylesheet" href="../../css/styleinicio.css" />
+  <link rel="stylesheet" href="../../css/table.css"/>
+
+</head>
+<body>
+  <div class="layout">
+    <!-- 1. Sidebar -->
+    <aside class="sidebar">
+      <!-- Parte azul superior -->
+      <div class="sidebar-header">
+        <a href="inicio.html">        
+          <img id="logo"  src="https://campus.ilerna.com/branding/_1_1/CustomNavigationLogo.png?m=m029883y" alt="">
+        </a>
+      </div>
+
+      <!-- Menú de navegación -->
+      <nav class="menu">
+        <ul>
+          <a class="opt" href="perfil.html"><image src="../../assets/img/profilePicW.png" class="icon">Perfil</a>
+          <a class="opt" href="calendario.html"><image class="icon" src="../../assets/img/calendarWhite.png">Calendario</a>
+          <a class="opt" href="profesores.html"><image class="icon" src="../../assets/img/profe.png">Profesores</a>
+          <a class="opt" href="alumnos.html"><image class="icon" src="../../assets/img/studentWhite.png">Alumnos</a>
+          <a class="select" href="pacientes.html"><image class="icon" src="../../assets/img/pacienteblack.png">Pacientes</a>
+          <a class="opt" href="../index.html"><image src="../../assets/img/logoutPicW.png" class="icon">Cerrar Sesión</a>
+        </ul>
+      </nav>
+
+      <!-- Enlaces legales -->
+      <div class="legal">
+        <p><a href="../../assets/pdf/terminos.pdf" target="_blank">Privacidad</a></p>
+        <p><a href="../../assets/pdf/terminos.pdf" target="_blank">Contacto</a></p>
+      </div>
+    </aside>
+
+    <!-- 2. Área principal -->
+    <div class="main-area">
+      <!-- Barra superior -->
+      <header class="top-bar">
+        <h1>Pacientes</h1>
+      </header>
+
+      <!-- Tarjetas -->
+      <section class="menu-alumnos">
+        <div id="titulo">
+            <h3>Pacientes</h3>
+        </div>
+        <div id="search">
+            <input type="text" id="buscar" placeholder="Buscar...">
+            <img src="../../assets/img/lupa.png">
+        </div>
+            
+        
+        <div id="contenido">
+            <table class="blueTable" id="tableSearch">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Correo</th>
+                <th>DNI</th>
+                <th>Telefono</th>
+                <th>Datos Medicos</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tbody>
+  <tr><td>1</td><td>Raúl</td><td>Rodríguez Ibañez</td><td>raul.rodriguez@gmail.com</td><td>12345678A</td><td>600123456</td><td>Sin alergias</td></tr>
+  <tr><td>2</td><td>Ana</td><td>López Martínez</td><td>ana.lopez@gmail.com</td><td>23456789B</td><td>611223344</td><td>Asma</td></tr>
+  <tr><td>3</td><td>Miguel</td><td>Pérez Gómez</td><td>miguel.perez@gmail.com</td><td>34567890C</td><td>622334455</td><td>Diabético tipo 1</td></tr>
+  <tr><td>4</td><td>Lucía</td><td>Ramírez Díaz</td><td>lucia.ramirez@gmail.com</td><td>45678901D</td><td>633445566</td><td>Sin observaciones</td></tr>
+  <tr><td>5</td><td>Carlos</td><td>Fernández Ruiz</td><td>carlos.fernandez@gmail.com</td><td>56789012E</td><td>644556677</td><td>Alérgico a penicilina</td></tr>
+  <tr><td>6</td><td>María</td><td>González Castro</td><td>maria.gonzalez@gmail.com</td><td>67890123F</td><td>655667788</td><td>Hipertensión</td></tr>
+  <tr><td>7</td><td>José</td><td>Martínez Vera</td><td>jose.martinez@gmail.com</td><td>78901234G</td><td>666778899</td><td>Sin alergias</td></tr>
+  <tr><td>8</td><td>Laura</td><td>Sánchez León</td><td>laura.sanchez@gmail.com</td><td>89012345H</td><td>677889900</td><td>Miopía</td></tr>
+  <tr><td>9</td><td>Pedro</td><td>García Torres</td><td>pedro.garcia@gmail.com</td><td>90123456I</td><td>688990011</td><td>Alérgico a frutos secos</td></tr>
+  <tr><td>10</td><td>Sara</td><td>Navarro Ramos</td><td>sara.navarro@gmail.com</td><td>01234567J</td><td>699001122</td><td>Sin observaciones</td></tr>
+  <tr><td>11</td><td>Iván</td><td>Moreno Vidal</td><td>ivan.moreno@gmail.com</td><td>11223344K</td><td>611112223</td><td>Diabético tipo 2</td></tr>
+  <tr><td>12</td><td>Elena</td><td>Molina Pérez</td><td>elena.molina@gmail.com</td><td>22334455L</td><td>622223334</td><td>Sin alergias</td></tr>
+  <tr><td>13</td><td>David</td><td>Hernández Soto</td><td>david.hernandez@gmail.com</td><td>33445566M</td><td>633334445</td><td>Problemas respiratorios</td></tr>
+  <tr><td>14</td><td>Paula</td><td>Cabrera Nieto</td><td>paula.cabrera@gmail.com</td><td>44556677N</td><td>644445556</td><td>Sin observaciones</td></tr>
+  <tr><td>15</td><td>Adrián</td><td>Delgado Ponce</td><td>adrian.delgado@gmail.com</td><td>55667788O</td><td>655556667</td><td>Asma leve</td></tr>
+  <tr><td>16</td><td>Irene</td><td>Reyes Suárez</td><td>irene.reyes@gmail.com</td><td>66778899P</td><td>666667778</td><td>Hipotiroidismo</td></tr>
+  <tr><td>17</td><td>Alberto</td><td>Castillo Bravo</td><td>alberto.castillo@gmail.com</td><td>77889900Q</td><td>677778889</td><td>Sin observaciones</td></tr>
+  <tr><td>18</td><td>Claudia</td><td>Ortega Marín</td><td>claudia.ortega@gmail.com</td><td>88990011R</td><td>688889900</td><td>Sin alergias</td></tr>
+  <tr><td>19</td><td>Javier</td><td>Ruiz Segura</td><td>javier.ruiz@gmail.com</td><td>99001122S</td><td>699990011</td><td>Alergia al polen</td></tr>
+  <tr><td>20</td><td>Valeria</td><td>Luna Cordero</td><td>valeria.luna@gmail.com</td><td>10011223T</td><td>600110022</td><td>Sin observaciones</td></tr>
+  <tr><td>21</td><td>Diego</td><td>Jiménez Ríos</td><td>diego.jimenez@gmail.com</td><td>11122334U</td><td>611223344</td><td>Sin alergias</td></tr>
+  <tr><td>22</td><td>Rosa</td><td>Medina Sáez</td><td>rosa.medina@gmail.com</td><td>12233445V</td><td>622334455</td><td>Sin observaciones</td></tr>
+  <tr><td>23</td><td>Tomás</td><td>Gallego Ayala</td><td>tomas.gallego@gmail.com</td><td>13344556W</td><td>633445566</td><td>Asma</td></tr>
+  <tr><td>24</td><td>Patricia</td><td>Rojas Molina</td><td>patricia.rojas@gmail.com</td><td>14455667X</td><td>644556677</td><td>Sin alergias</td></tr>
+  <tr><td>25</td><td>Jorge</td><td>Rey Navas</td><td>jorge.rey@gmail.com</td><td>15566778Y</td><td>655667788</td><td>Alérgico al gluten</td></tr>
+  <tr><td>26</td><td>Verónica</td><td>Soler Vidal</td><td>veronica.soler@gmail.com</td><td>16677889Z</td><td>666778899</td><td>Miopía severa</td></tr>
+  <tr><td>27</td><td>Andrés</td><td>Pineda Oliva</td><td>andres.pineda@gmail.com</td><td>17788990A</td><td>677889900</td><td>Sin observaciones</td></tr>
+  <tr><td>28</td><td>Carmen</td><td>Domínguez Rueda</td><td>carmen.dominguez@gmail.com</td><td>18899001B</td><td>688990011</td><td>Hipertensión</td></tr>
+  <tr><td>29</td><td>Francisco</td><td>Nieto Ramos</td><td>francisco.nieto@gmail.com</td><td>19900112C</td><td>699001122</td><td>Sin alergias</td></tr>
+  <tr><td>30</td><td>Beatriz</td><td>López Cano</td><td>beatriz.lopez@gmail.com</td><td>20011223D</td><td>611112223</td><td>Alergia a mariscos</td></tr>
+  <tr><td>31</td><td>Mario</td><td>Silva Lara</td><td>mario.silva@gmail.com</td><td>21122334E</td><td>622223334</td><td>Sin observaciones</td></tr>
+
+
+                    
+                </tbody>
+        </tbody>
+    </table>
+
+        </div>
+        <div id="botones">
+            <button>Crear paci.</button>
+            <button>Modi. paci.</button>
+            <button>Elim. paci.</button>
+        </div>
+      </section>
+    </div>
+  </div>
+    <script src="../../js/table.js"></script>
+
+
+</body>
+</html>
