@@ -74,10 +74,21 @@
 
                 <form id="contactForm" class="login-form">
 
-                    <label for="email" class="form-label">Correo del destinatario:</label>
-                    <input type="email" id="email" class="form-input" name="email" required />
+                    <label for="otp" class="form-label">Código OTP:</label>
+                    <input id="otp" class="form-input" name="OTP" required />
+                    <div class="form-group">
+                        <label for="password" class="form-label">Nueva contraseña:</label>
+                        <div class="password-container">
+                            <input type="password" id="password" class="form-input" required />
+                            <button type="button" class="show-password-btn" onclick="togglePassword()">Mostrar</button>
+                        </div>
+                        <label for="password" class="form-label">Repetir contraseña:</label>
+                        <div class="password-container">
+                            <input type="password" id="password2" class="form-input" required />
+                        </div>
+                    </div>
 
-                    <button type="submit" class="login-btn" id="continuar">Enviar</button>
+                    <button type="submit" class="login-btn" id="continuar">Cambiar contraseña</button>
                     <div id="status"></div>
                 </form>
                     <p id="noaccount"><a href="../index.html">Volver</a></p>
@@ -85,7 +96,9 @@
         </div>
     </main>
 
+<script src="../../JS/pass.js"></script>
+<script src="../../JS/changePass.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script src="../../JS/otp.js"></script>
+
 </body>
 </html>
