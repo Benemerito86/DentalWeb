@@ -1,0 +1,185 @@
+/* Estilo general del body */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F5F5F5;
+    margin: 0;
+    padding: 0;
+    color: #333333;
+}
+  
+/* Encabezado */
+h1 {
+    text-align: center;
+    color: #0056A0; /* Azul ILERNA */
+    margin-top: 30px;
+}
+  
+/* Contenedor principal */
+#main-container {
+  display: flex; /* Alinear elementos horizontalmente */
+  justify-content: space-between; /* Espacio entre el calendario y el formulario */
+  align-items: flex-start; /* Alinear elementos al inicio verticalmente */
+  gap: 20px; /* Espacio entre el calendario y el formulario */
+  padding: 20px; /* Espaciado interno del contenedor principal */
+  width: 100%; /* Asegurar que el contenedor ocupe todo el ancho disponible */
+  box-sizing: border-box; /* Incluir padding y border en el ancho total */
+}
+
+/* Contenedor del calendario */
+#calendar {
+  flex: 2; /* Ocupa más espacio que el formulario */
+  max-width: 70%; /* Ajustar el ancho del calendario */
+  margin: 0; /* Eliminar cualquier margen que cause problemas */
+  transition: transform 0.3s ease; /* Animación para el desplazamiento */
+  box-sizing: border-box; /* Asegurar que el padding no afecte el ancho */
+}
+
+/* Contenedor del formulario */
+#form-container {
+  flex: 1; /* Ocupa menos espacio que el calendario */
+  max-width: 40%; /* Aumentar el ancho del formulario */
+  background-color: white;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Animación para mostrar/ocultar */
+  box-sizing: border-box; /* Asegurar que el padding no afecte el ancho */
+  margin-left: -10px; /* Mover ligeramente hacia la izquierda */
+}
+
+#form-container.hidden {
+  opacity: 0;
+  transform: translateX(100%); /* Mover fuera de la vista */
+  pointer-events: none; /* Deshabilitar interacciones cuando está oculto */
+}
+
+#form-container h2 {
+  color: #333;
+  text-align: center;
+}
+
+#form-container label {
+  font-weight: bold;
+  color: #333;
+}
+
+#form-container input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#form-container select.large-select {
+  font-size: 16px; /* Hacer el texto más grande */
+  padding: 10px; /* Aumentar el espacio interno */
+  width: 100%; /* Hacer que ocupe todo el ancho disponible */
+  box-sizing: border-box; /* Asegurar que el padding no afecte el ancho */
+}
+
+#form-container textarea {
+  width: 100%; /* Asegurar que el textarea ocupe todo el ancho */
+  box-sizing: border-box; /* Asegurar que el padding no afecte el ancho */
+  resize: none; /* Evitar que el usuario cambie el tamaño del textarea */
+}
+
+#form-container .button-container {
+  margin-top: 20px; /* Espacio adicional entre los botones y el campo anterior */
+  display: flex;
+  justify-content: space-between; /* Separar los botones horizontalmente */
+}
+
+#form-container .fc-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  width: 48%; /* Asegurar que los botones tengan el mismo ancho */
+}
+
+#form-container .fc-button:hover {
+  background-color: #0056A0;
+}
+
+/* Barra de herramientas */
+.fc-toolbar-title {
+    color: #0056A0;
+    font-size: 1.6em;
+}
+  
+/* Evento del calendario */
+.fc-event {
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 2px 4px;
+}
+  
+/* Estilo de hora (en la vista diaria) */
+.fc-timegrid-slot-label {
+    visibility: visible !important;
+    font-size: 18px; /* Aumentar el tamaño de las horas */
+    color: #333; /* Cambia el color si lo deseas */
+    font-weight: bold;
+}
+  
+/* Vista de día y rejilla */
+.fc-timegrid {
+    background-color: #FAFAFA;
+}
+
+/* Contenedor de eliminación */
+#delete-container {
+  position: fixed;
+  top: 20%;
+  right: 0;
+  width: 300px;
+  background-color: white;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+#delete-container.hidden {
+  display: none;
+}
+
+#delete-container h2 {
+  color: #333;
+  text-align: center;
+}
+
+#delete-container p {
+  font-size: 14px;
+  color: #555;
+}
+
+#delete-container .fc-button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+#delete-container .fc-button:hover {
+  background-color: #c9302c;
+}

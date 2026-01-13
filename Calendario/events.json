@@ -1,0 +1,23 @@
+[
+    {
+      "title": "Paciente A - Aula 1 Sillón 1",
+      "start": "2025-06-05T10:00:00",
+      "end": "2025-06-05T10:30:00"
+    },
+    {
+      "title": "Paciente B - Aula 1 Sillón 2",
+      "start": "2025-06-05T10:00:00",
+      "end": "2025-06-05T10:30:00"
+    },
+    {
+      "title": "Paciente C - Aula 2 Sillón 1",
+      "start": "2025-06-05T10:00:00",
+      "end": "2025-06-05T10:30:00"
+    },
+    {
+      "title": "Paciente D - Aula 2 Sillón 2",
+      "start": "2025-06-05T10:00:00",
+      "end": "2025-06-05T10:30:00"
+    }
+  ]
+  
